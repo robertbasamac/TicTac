@@ -8,17 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A339CB28E1C43B00FE7896 /* TicTacApp.swift */; };
-		09A339CE28E1C43B00FE7896 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A339CD28E1C43B00FE7896 /* ContentView.swift */; };
 		09A339D028E1C43C00FE7896 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A339CF28E1C43C00FE7896 /* Assets.xcassets */; };
 		09A339D328E1C43C00FE7896 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A339D228E1C43C00FE7896 /* Preview Assets.xcassets */; };
+		09A6303A28E2FBAF006E9F31 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303928E2FBAF006E9F31 /* Stopwatch.swift */; };
+		09A6303C28E2FBF6006E9F31 /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303B28E2FBF5006E9F31 /* StopwatchView.swift */; };
+		09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303E28E3754E006E9F31 /* TimeInterval.swift */; };
+		09A6304228E38BB5006E9F31 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6304128E38BB5006E9F31 /* Date.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		09A339C828E1C43B00FE7896 /* TicTac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09A339CB28E1C43B00FE7896 /* TicTacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacApp.swift; sourceTree = "<group>"; };
-		09A339CD28E1C43B00FE7896 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		09A339CF28E1C43C00FE7896 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		09A339D228E1C43C00FE7896 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		09A6303928E2FBAF006E9F31 /* Stopwatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
+		09A6303B28E2FBF5006E9F31 /* StopwatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchView.swift; sourceTree = "<group>"; };
+		09A6303E28E3754E006E9F31 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
+		09A6304128E38BB5006E9F31 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +58,9 @@
 			isa = PBXGroup;
 			children = (
 				09A339CB28E1C43B00FE7896 /* TicTacApp.swift */,
-				09A339CD28E1C43B00FE7896 /* ContentView.swift */,
+				09A6303D28E37543006E9F31 /* Extensions */,
+				09A6304028E38976006E9F31 /* Model */,
+				09A6304328E392B4006E9F31 /* View */,
 				09A339CF28E1C43C00FE7896 /* Assets.xcassets */,
 				09A339D128E1C43C00FE7896 /* Preview Content */,
 			);
@@ -65,6 +73,31 @@
 				09A339D228E1C43C00FE7896 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		09A6303D28E37543006E9F31 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				09A6303E28E3754E006E9F31 /* TimeInterval.swift */,
+				09A6304128E38BB5006E9F31 /* Date.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		09A6304028E38976006E9F31 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				09A6303928E2FBAF006E9F31 /* Stopwatch.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		09A6304328E392B4006E9F31 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				09A6303B28E2FBF5006E9F31 /* StopwatchView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +170,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09A339CE28E1C43B00FE7896 /* ContentView.swift in Sources */,
+				09A6304228E38BB5006E9F31 /* Date.swift in Sources */,
+				09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */,
+				09A6303A28E2FBAF006E9F31 /* Stopwatch.swift in Sources */,
+				09A6303C28E2FBF6006E9F31 /* StopwatchView.swift in Sources */,
 				09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

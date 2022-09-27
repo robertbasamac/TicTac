@@ -11,7 +11,8 @@ import SwiftUI
 struct TicTacApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StopwatchView()
+                .preferredColorScheme(.dark)
         }
     }
 }
