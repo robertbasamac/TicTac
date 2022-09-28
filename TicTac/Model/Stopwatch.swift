@@ -8,15 +8,15 @@
 import Foundation
 import Combine
 
-class Stopwatch: ObservableObject {
-    @Published private(set) var message = ""
+class Stopwatch: Identifiable, ObservableObject {
+    var message = ""
     
-    @Published private(set) var isRunning: Bool = false
-    @Published private(set) var isPaused: Bool = false
+    var isRunning: Bool = false
+    var isPaused: Bool = false
     
-    @Published private(set) var remainingPercentage: Double = 1
+    var remainingPercentage: Double = 1
     
-    @Published private(set) var alarmTime: Date? = nil
+    var alarmTime: Date? = nil
 
     private var startTime: Date? {
         didSet {
@@ -72,7 +72,7 @@ extension Stopwatch {
                     self.remainingPercentage = 1 - self.elapsed / self.duration
                                         
                     guard self.elapsed < self.duration else {
-                        self.stop()
+                        self.stopTimer()
                         return
                     }
                     
@@ -86,17 +86,17 @@ extension Stopwatch {
         isRunning = true
     }
     
-    func pause() {
+    func pauseTimer() {
         pauseTime = Date()
         isPaused = true
     }
     
-    func resume() {
+    func resumeTimer() {
         startTime = Date(timeInterval: elapsedOnPause, since: startTime ?? Date())
         isPaused = false
     }
     
-    func stop() {
+    func stopTimer() {
         timer?.cancel()
         timer = nil
         startTime = nil

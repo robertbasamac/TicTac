@@ -9,10 +9,13 @@ import SwiftUI
 
 @main
 struct TicTacApp: App {
+    @StateObject var timerManager = TimerManager()
+    
     var body: some Scene {
         WindowGroup {
-            StopwatchView()
+            MainView()
                 .preferredColorScheme(.dark)
+                .environmentObject(timerManager)
         }
     }
 }

@@ -7,24 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		094C74B328E47FA6006453C3 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094C74B228E47FA6006453C3 /* TimerView.swift */; };
 		09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A339CB28E1C43B00FE7896 /* TicTacApp.swift */; };
 		09A339D028E1C43C00FE7896 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A339CF28E1C43C00FE7896 /* Assets.xcassets */; };
 		09A339D328E1C43C00FE7896 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A339D228E1C43C00FE7896 /* Preview Assets.xcassets */; };
 		09A6303A28E2FBAF006E9F31 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303928E2FBAF006E9F31 /* Stopwatch.swift */; };
-		09A6303C28E2FBF6006E9F31 /* StopwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303B28E2FBF5006E9F31 /* StopwatchView.swift */; };
+		09A6303C28E2FBF6006E9F31 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303B28E2FBF5006E9F31 /* MainView.swift */; };
 		09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303E28E3754E006E9F31 /* TimeInterval.swift */; };
 		09A6304228E38BB5006E9F31 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6304128E38BB5006E9F31 /* Date.swift */; };
+		09B4F2B728E4420100451810 /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B4F2B628E4420100451810 /* TimerModel.swift */; };
+		09B4F2BA28E4434E00451810 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B4F2B928E4434E00451810 /* TimerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		094C74B228E47FA6006453C3 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		09A339C828E1C43B00FE7896 /* TicTac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09A339CB28E1C43B00FE7896 /* TicTacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacApp.swift; sourceTree = "<group>"; };
 		09A339CF28E1C43C00FE7896 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		09A339D228E1C43C00FE7896 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		09A6303928E2FBAF006E9F31 /* Stopwatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
-		09A6303B28E2FBF5006E9F31 /* StopwatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchView.swift; sourceTree = "<group>"; };
+		09A6303B28E2FBF5006E9F31 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		09A6303E28E3754E006E9F31 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		09A6304128E38BB5006E9F31 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		09B4F2B628E4420100451810 /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
+		09B4F2B928E4434E00451810 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +67,7 @@
 				09A6303D28E37543006E9F31 /* Extensions */,
 				09A6304028E38976006E9F31 /* Model */,
 				09A6304328E392B4006E9F31 /* View */,
+				09B4F2B828E4433E00451810 /* ViewModel */,
 				09A339CF28E1C43C00FE7896 /* Assets.xcassets */,
 				09A339D128E1C43C00FE7896 /* Preview Content */,
 			);
@@ -88,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				09A6303928E2FBAF006E9F31 /* Stopwatch.swift */,
+				09B4F2B628E4420100451810 /* TimerModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -95,9 +103,18 @@
 		09A6304328E392B4006E9F31 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				09A6303B28E2FBF5006E9F31 /* StopwatchView.swift */,
+				09A6303B28E2FBF5006E9F31 /* MainView.swift */,
+				094C74B228E47FA6006453C3 /* TimerView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		09B4F2B828E4433E00451810 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				09B4F2B928E4434E00451810 /* TimerManager.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,7 +190,10 @@
 				09A6304228E38BB5006E9F31 /* Date.swift in Sources */,
 				09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */,
 				09A6303A28E2FBAF006E9F31 /* Stopwatch.swift in Sources */,
-				09A6303C28E2FBF6006E9F31 /* StopwatchView.swift in Sources */,
+				09B4F2B728E4420100451810 /* TimerModel.swift in Sources */,
+				09A6303C28E2FBF6006E9F31 /* MainView.swift in Sources */,
+				09B4F2BA28E4434E00451810 /* TimerManager.swift in Sources */,
+				094C74B328E47FA6006453C3 /* TimerView.swift in Sources */,
 				09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
