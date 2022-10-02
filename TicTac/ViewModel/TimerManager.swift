@@ -18,7 +18,7 @@ class TimerManager: ObservableObject {
         clock?.cancel()
         
         clock = Timer
-            .publish(every: 0.01, on: .main, in: .common)
+            .publish(every: 0.001, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] value in
                 guard let self = self else { return }
@@ -64,26 +64,26 @@ class TimerManager: ObservableObject {
     func startTimer(_ timer: TimerModel) {
         startClock()
         
-        print("\nstartTimer called: \(timer.id)")
+//        print("\nstartTimer called: \(timer.id)")
         if let index = timers.firstIndex(where: { $0.id == timer.id }) {
-            print("startTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
+//            print("startTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
 
             timers[index].startTime = Date()
             timers[index].isRunning = true
             
-            print("startTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
+//            print("startTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
         }
     }
     
     func pauseTimer(_ timer: TimerModel) {
-        print("\npauseTimer called: \(timer.id)")
+//        print("\npauseTimer called: \(timer.id)")
         if let index = timers.firstIndex(where: { $0.id == timer.id }) {
-            print("pauseTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
+//            print("pauseTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
 
             timers[index].pauseTime = Date()
             timers[index].isPaused = true
             
-            print("pauseTimer: after isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
+//            print("pauseTimer: after isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
         }
         
         stopClock()
@@ -91,24 +91,24 @@ class TimerManager: ObservableObject {
     
     func resumeTimer(_ timer: TimerModel) {
         startClock()
-        print("\nresumeTimer called: \(timer.id)")
+//        print("\nresumeTimer called: \(timer.id)")
         
         if let index = timers.firstIndex(where: { $0.id == timer.id }) {
-            print("resumeTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
+//            print("resumeTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
             
             timers[index].timeElapsedOnPause = Date().timeIntervalSince(self.timers[index].pauseTime ?? Date())
             timers[index].startTime = Date(timeInterval: timers[index].timeElapsedOnPause, since: timers[index].startTime ?? Date())
             timers[index].isPaused = false
             
-            print("resumeTimer: after isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
+//            print("resumeTimer: after isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
         }
     }
     
     func stopTimer(_ timer: TimerModel) {
-        print("\nstopTimer called: \(timer.id)")
+//        print("\nstopTimer called: \(timer.id)")
 
         if let index = timers.firstIndex(where: { $0.id == timer.id }) {
-            print("stopTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
+//            print("stopTimer: before isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
 
             timers[index].startTime = nil
             timers[index].alarmTime = nil
@@ -119,7 +119,7 @@ class TimerManager: ObservableObject {
             timers[index].remainingPercentage = 1
             timers[index].message = timers[index].duration.asHoursMinutesSeconds
             
-            print("stopTimer: after isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
+//            print("stopTimer: after isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
         }
         
         stopClock()
