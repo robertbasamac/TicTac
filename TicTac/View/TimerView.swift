@@ -10,7 +10,7 @@ import SwiftUI
 struct TimerView: View {
     @EnvironmentObject private var tm: TimerManager
     
-    @Binding var timer: TimerModel
+    let timer: TimerModel
     
     var body: some View {
         VStack(spacing: 2) {
@@ -74,6 +74,6 @@ struct TimerView: View {
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
-        TimerView(timer: .constant(TimerModel(title: "Test", duration: 100000)))
+        TimerView(timer: dev.timer)
     }
 }

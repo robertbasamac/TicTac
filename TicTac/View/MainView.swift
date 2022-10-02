@@ -14,7 +14,7 @@ struct MainView: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    ForEach($tm.timers) { timer in
+                    ForEach(tm.timers) { timer in
                         TimerView(timer: timer)
                     }
                 }
