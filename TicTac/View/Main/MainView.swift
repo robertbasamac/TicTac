@@ -12,18 +12,18 @@ struct MainView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack {
-                    ForEach(tm.timers) { timer in
-                        TimerView(timer: timer)
-                    }
+            List {
+                ForEach(tm.timers) { timer in
+                    TimerRowView(timer: timer)
+                        .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 6))
                 }
             }
+            .listStyle(.plain)
             .navigationTitle("Timers")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        tm.createTimer(title: "Test", duration: 10)
+                        tm.createTimer(title: "Timer title", duration: 10)
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -36,6 +36,8 @@ struct MainView: View {
 struct StopwatchView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
+            .environmentObject(TimerManager())
+            .preferredColorScheme(.dark)
     }
 }
 

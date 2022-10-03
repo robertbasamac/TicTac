@@ -21,18 +21,18 @@ struct TimerModel: Identifiable {
     var duration: Double
     var timeElapsed: Double = 0 {
         didSet {
-            message = (duration - timeElapsed).asHoursMinutesSeconds
+            displayedTime = (duration - timeElapsed).asHoursMinutesSeconds
         }
     }
     var timeElapsedOnPause: Double = 0
     var remainingPercentage: Double = 1
     var isRunning: Bool = false
     var isPaused: Bool = false
-    var message: String = ""
+    var displayedTime: String = ""
     
     init(title: String, duration: Double) {
         self.duration = duration
         self.title = title
-        self.message = self.duration.asHoursMinutesSeconds
+        self.displayedTime = self.duration.asHoursMinutesSeconds
     }
 }

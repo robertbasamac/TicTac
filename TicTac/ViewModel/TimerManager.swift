@@ -30,7 +30,7 @@ class TimerManager: ObservableObject {
                         
                         if self.timers[index].timeElapsed < self.timers[index].duration {
                             let remainingTime = self.timers[index].duration - self.timers[index].timeElapsed
-                            self.timers[index].message = remainingTime.asHoursMinutesSeconds
+                            self.timers[index].displayedTime = remainingTime.asHoursMinutesSeconds
                         } else {
                             self.stopTimer(self.timers[index])
                         }
@@ -54,7 +54,7 @@ class TimerManager: ObservableObject {
     }
     
     func createTimer(title: String, duration: Double) {
-        let timer = TimerModel(title: title, duration: 10)
+        let timer = TimerModel(title: title, duration: duration)
         
         timers.append(timer)
         
@@ -117,7 +117,7 @@ class TimerManager: ObservableObject {
             timers[index].timeElapsed = 0
             timers[index].timeElapsedOnPause = 0
             timers[index].remainingPercentage = 1
-            timers[index].message = timers[index].duration.asHoursMinutesSeconds
+            timers[index].displayedTime = timers[index].duration.asHoursMinutesSeconds
             
 //            print("stopTimer: after isRunning(\(timers[index].isRunning)), isPaused(\(timers[index].isPaused))")
         }
