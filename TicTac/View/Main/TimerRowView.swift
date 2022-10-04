@@ -38,7 +38,6 @@ struct TimerRowView: View {
                     : tm.startTimer(timer)
                 }
         }
-        .frame(height: 100, alignment: .center)
     }
 }
 
@@ -52,9 +51,10 @@ struct TimerRowView_Previews: PreviewProvider {
 extension TimerRowView {
     
     private var titleSection: some View {
-        Text(timer.title)
-            .font(.title3)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            Text(timer.title)
+                .font(.system(size: 22, weight: .none, design: .default))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(3)
     }
         
     private var progressCircleView: some View {
@@ -71,25 +71,25 @@ extension TimerRowView {
             
             ZStack {
                 Text("\(timer.displayedTime)")
-                    .font(.title2)
+                    .font(.system(size: 22, weight: .none, design: .default))
                 
                 HStack(alignment: .center, spacing: 2) {
                     Image(systemName: "bell.fill")
                     Text((timer.alarmTime ?? Date()).asHoursAndMinutes)
                 }
-                .font(.caption2)
+                .font(.system(size: 12, weight: .none, design: .default))
                 .foregroundStyle(timer.isPaused ? .tertiary : .primary)
                 .foregroundColor(.gray)
                 .offset(y: 20)
             }
         }
         .padding(4)
-        .frame(width: 110)
+        .frame(width: 110, height: 110)
     }
     
     private var timerDurationView: some View {
         Text("\(timer.duration.asHoursMinutesSeconds)")
-            .font(.title2)
-            .frame(width: 110)
+            .font(.system(size: 22, weight: .none, design: .rounded))
+            .frame(width: 110, height: 110)
     }
 }

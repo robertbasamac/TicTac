@@ -15,7 +15,7 @@ struct MainView: View {
             List {
                 ForEach(tm.timers) { timer in
                     TimerRowView(timer: timer)
-                        .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 6))
+                        .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 4))
                 }
             }
             .listStyle(.plain)
