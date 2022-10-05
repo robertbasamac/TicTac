@@ -13,6 +13,8 @@ struct AddTimerView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+//    @Binding var returnedDuration: Double
+    
     @State private var secondsSelection: Int = 0
     @State private var minutesSelection: Int = 0
     @State private var hoursSelection: Int = 0
@@ -21,17 +23,21 @@ struct AddTimerView: View {
     private var minutes: [Int] = [Int](0..<60)
     private var hours: [Int] = [Int](0..<24)
     
+//    init(returnedDuration: Binding<Double>) {
+//        self._returnedDuration = returnedDuration
+//    }
+    
     var body: some View {
         NavigationStack {
             VStack {
 //                HStack(spacing: 0) {
 //                    hoursPicker
 //                    minutesPicker
-                    secondsPicker
+                secondsPicker
 //                }
 //                .padding(.horizontal, 40)
 //                .animation(.default, value: UUID())
-                
+//                    .frame(width: 300, height: 300)
                 Spacer()
             }
             .navigationTitle("Add Timer")
@@ -47,7 +53,8 @@ struct AddTimerView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        tm.createTimer(title: "Timer added from View", duration: getPickerDurationAsSeconds())
+//                        returnedDuration = getPickerDurationAsSeconds()
+                        tm.createTimer(title: "Timer added from AddTimerView", duration: getPickerDurationAsSeconds())
                         dismiss()
                     } label: {
                         Text("Save")

@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MainView: View {
     @EnvironmentObject private var tm: TimerManager
     
-    @State private var showAddtimer: Bool = false
+    @State var showAddtimer: Bool = false
+    
+//    @State var nextTimerDuration: Double = 0
     
     var body: some View {
         NavigationStack {
@@ -33,8 +36,15 @@ struct MainView: View {
                 }
             }
             .sheet(isPresented: $showAddtimer) {
+//                AddTimerView(returnedDuration: $nextTimerDuration)
                 AddTimerView()
             }
+//            .onChange(of: nextTimerDuration) { duration in
+//                if duration > 0 {
+//                    tm.createTimer(title: "Title", duration: duration)
+//                    nextTimerDuration = 0
+//                }
+//            }
         }
     }
 }

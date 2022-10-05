@@ -18,7 +18,7 @@ class TimerManager: ObservableObject {
         clock?.cancel()
         
         clock = Timer
-            .publish(every: 0.01, on: .main, in: .common)
+            .publish(every: 0.1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
                 guard let self = self else { return }
