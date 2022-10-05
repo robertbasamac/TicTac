@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct MainView: View {
-    @EnvironmentObject var tm: TimerManager
+    @EnvironmentObject private var tm: TimerManager
+    
+    @State private var showAddtimer: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -23,11 +25,15 @@ struct MainView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        tm.createTimer(title: "Timer title", duration: 10)
+                        showAddtimer.toggle()
+//                        tm.createTimer(title: "Timer title", duration: 10)
                     } label: {
                         Image(systemName: "plus")
                     }
                 }
+            }
+            .sheet(isPresented: $showAddtimer) {
+                AddTimerView()
             }
         }
     }

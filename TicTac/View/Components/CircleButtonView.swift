@@ -9,15 +9,21 @@ import SwiftUI
 
 struct CircleButtonView: View {
     
-    let iconName: String
-    let foregroundColor: Color
-    let backgroundColor: Color
+    private let iconName: String
+    private let foregroundColor: Color
+    private let backgroundColor: Color
+    
+    init(iconName: String, foregroundColor: Color, backgroundColor: Color) {
+        self.iconName = iconName
+        self.foregroundColor = foregroundColor
+        self.backgroundColor = backgroundColor
+    }
     
     var body: some View {
         Image(systemName: iconName)
-            .font(.system(size: 22, weight: .medium, design: .default))
+            .font(.system(size: 18, weight: .medium, design: .default))
             .foregroundColor(foregroundColor)
-            .frame(width: 55, height: 55)
+            .frame(width: 45, height: 45)
             .background(
                 Circle()
                     .foregroundStyle(.tertiary)
@@ -29,7 +35,7 @@ struct CircleButtonView: View {
 
 struct CircleButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        CircleButtonView(iconName: "play.fill", foregroundColor: .white, backgroundColor: .gray)
+        CircleButtonView(iconName: "play.fill", foregroundColor: .green, backgroundColor: .green)
             .previewLayout(.sizeThatFits)
     }
 }

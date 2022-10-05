@@ -52,9 +52,9 @@ extension TimerRowView {
     
     private var titleSection: some View {
             Text(timer.title)
-                .font(.system(size: 22, weight: .none, design: .default))
+                .font(.system(size: 18, weight: .none, design: .default))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .lineLimit(3)
+                .lineLimit(2)
     }
         
     private var progressCircleView: some View {
