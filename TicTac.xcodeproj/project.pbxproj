@@ -21,6 +21,7 @@
 		09B1404D28EA2CEA00FDBE2B /* TimerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B1404C28EA2CEA00FDBE2B /* TimerRowView.swift */; };
 		09B4F2B728E4420100451810 /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B4F2B628E4420100451810 /* TimerModel.swift */; };
 		09B4F2BA28E4434E00451810 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B4F2B928E4434E00451810 /* TimerManager.swift */; };
+		09C10C6D28EED4E500B9B79C /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C10C6C28EED4E500B9B79C /* View.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		09B1404C28EA2CEA00FDBE2B /* TimerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerRowView.swift; sourceTree = "<group>"; };
 		09B4F2B628E4420100451810 /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		09B4F2B928E4434E00451810 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		09C10C6C28EED4E500B9B79C /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,10 +95,11 @@
 		09A6303D28E37543006E9F31 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				09A6303E28E3754E006E9F31 /* TimeInterval.swift */,
+				09C10C6C28EED4E500B9B79C /* View.swift */,
 				09A6304128E38BB5006E9F31 /* Date.swift */,
-				09B1404828EA2A1000FDBE2B /* PreviewProvider.swift */,
+				09A6303E28E3754E006E9F31 /* TimeInterval.swift */,
 				09614C7128EB787D0069EE8C /* Color.swift */,
+				09B1404828EA2A1000FDBE2B /* PreviewProvider.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09C10C6D28EED4E500B9B79C /* View.swift in Sources */,
 				09A6304228E38BB5006E9F31 /* Date.swift in Sources */,
 				09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */,
 				09614C7228EB787D0069EE8C /* Color.swift in Sources */,

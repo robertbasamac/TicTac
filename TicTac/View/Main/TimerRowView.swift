@@ -9,17 +9,13 @@ import SwiftUI
 
 struct TimerRowView: View {
     @EnvironmentObject private var tm: TimerManager
+    @Environment(\.editMode) private var editMode
     
     let timer: TimerModel
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 8) {
             titleSection
-                        
-            CircleButtonView(iconName: "xmark", foregroundColor: .white, backgroundColor: .gray)
-                .onTapGesture {
-                    tm.stopTimer(timer)
-                }
             
             if timer.isRunning {
                 progressCircleView
@@ -27,16 +23,25 @@ struct TimerRowView: View {
                 timerDurationView
             }
             
-            CircleButtonView(iconName: timer.isRunning != timer.isPaused ? "pause.fill" : "play.fill",
-                             foregroundColor: timer.isRunning != timer.isPaused ? .orange : .green,
-                             backgroundColor: timer.isRunning != timer.isPaused ? .orange : .green)
-                .onTapGesture {
-                    timer.isRunning ?
-                    (timer.isPaused ?
-                     tm.resumeTimer(timer) :
-                        tm.pauseTimer(timer))
-                    : tm.startTimer(timer)
+            if editMode?.wrappedValue.isEditing != true {
+                VStack(spacing: 4) {
+                    CircleButtonView(iconName: "xmark", foregroundColor: .white, backgroundColor: .gray)
+                        .onTapGesture {
+                            tm.stopTimer(timer)
+                        }
+                    
+                    CircleButtonView(iconName: timer.isRunning != timer.isPaused ? "pause.fill" : "play.fill",
+                                     foregroundColor: timer.isRunning != timer.isPaused ? .orange : .green,
+                                     backgroundColor: timer.isRunning != timer.isPaused ? .orange : .green)
+                        .onTapGesture {
+                            timer.isRunning ?
+                            (timer.isPaused ?
+                             tm.resumeTimer(timer) :
+                                tm.pauseTimer(timer))
+                            : tm.startTimer(timer)
+                        }
                 }
+            }
         }
     }
 }
@@ -51,10 +56,11 @@ struct TimerRowView_Previews: PreviewProvider {
 extension TimerRowView {
     
     private var titleSection: some View {
-            Text(timer.title)
-                .font(.system(size: 18, weight: .none, design: .default))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .lineLimit(2)
+        Text(timer.title)
+            .font(.system(size: 18, weight: .none, design: .default))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .lineLimit(2)
+            .minimumScaleFactor(0.8)
     }
         
     private var progressCircleView: some View {

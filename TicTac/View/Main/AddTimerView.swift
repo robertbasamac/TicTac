@@ -13,8 +13,6 @@ struct AddTimerView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-//    @Binding var returnedDuration: Double
-    
     @State private var secondsSelection: Int = 0
     @State private var minutesSelection: Int = 0
     @State private var hoursSelection: Int = 0
@@ -23,21 +21,17 @@ struct AddTimerView: View {
     private var minutes: [Int] = [Int](0..<60)
     private var hours: [Int] = [Int](0..<24)
     
-//    init(returnedDuration: Binding<Double>) {
-//        self._returnedDuration = returnedDuration
-//    }
-    
     var body: some View {
         NavigationStack {
             VStack {
-//                HStack(spacing: 0) {
+                HStack(spacing: 20) {
 //                    hoursPicker
 //                    minutesPicker
-                secondsPicker
-//                }
-//                .padding(.horizontal, 40)
+                    secondsPicker
+                }
+                .padding(.horizontal, 20)
 //                .animation(.default, value: UUID())
-//                    .frame(width: 300, height: 300)
+//                .frame(width: 300, height: 300)
                 Spacer()
             }
             .navigationTitle("Add Timer")
@@ -53,7 +47,6 @@ struct AddTimerView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-//                        returnedDuration = getPickerDurationAsSeconds()
                         tm.createTimer(title: "Timer added from AddTimerView", duration: getPickerDurationAsSeconds())
                         dismiss()
                     } label: {
@@ -62,6 +55,12 @@ struct AddTimerView: View {
                     .disabled(getPickerDurationAsSeconds() == 0)
                 }
             }
+        }
+        .onAppear{
+            tm.isActive = false
+        }
+        .onWillDisappear{
+            tm.isActive = true
         }
     }
 }
@@ -119,13 +118,13 @@ extension AddTimerView {
     }
     
     private var secondsPicker: some View {
-//        ZStack(alignment: .center) {
+        ZStack(alignment: .center) {
             Picker(selection: $secondsSelection) {
                 ForEach(seconds, id: \.self) { index in
                     Text("\(index)").tag(index)
                         .font(.title3)
-//                        .frame(width: 30, alignment: .trailing)
-//                        .offset(x: -22)
+                        .frame(width: 30, alignment: .trailing)
+                        .offset(x: -22)
                 }
             } label: {
                 Text("Seconds")
@@ -133,11 +132,11 @@ extension AddTimerView {
             .pickerStyle(.wheel)
             .labelsHidden()
             
-//            Text("sec")
-//                .font(.headline)
-//                .frame(width: 50, alignment: .leading)
-//                .offset(x: 20)
-//        }
+            Text("sec")
+                .font(.headline)
+                .frame(width: 50, alignment: .leading)
+                .offset(x: 20)
+        }
     }
     
     private func getPickerDurationAsSeconds() -> Double {
@@ -152,7 +151,7 @@ extension AddTimerView {
 }
 
 //extension UIPickerView {
-//
+//    
 //    open override var intrinsicContentSize: CGSize {
 //        return CGSize(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric)
 //    }

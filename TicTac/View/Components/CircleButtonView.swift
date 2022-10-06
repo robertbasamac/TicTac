@@ -29,7 +29,7 @@ struct CircleButtonView: View {
                     .foregroundStyle(.tertiary)
                     .foregroundColor(backgroundColor)
             )
-            .padding(8)
+            .padding(4)
     }
 }
 

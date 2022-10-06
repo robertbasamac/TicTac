@@ -12,13 +12,15 @@ class TimerManager: ObservableObject {
     
     @Published var timers: [TimerModel] = []
 
+    @Published var isActive: Bool = false
+    
     @Published private var clock: AnyCancellable?
     
     private func startClock() {
         clock?.cancel()
         
         clock = Timer
-            .publish(every: 0.1, on: .main, in: .common)
+            .publish(every: 0.01, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
                 guard let self = self else { return }
@@ -44,15 +46,17 @@ class TimerManager: ObservableObject {
     }
     
     private func updateTimer(forIndex index: Int) {
-        if self.timers[index].isRunning && !self.timers[index].isPaused {
-            self.timers[index].timeElapsed = Date().timeIntervalSince(self.timers[index].startTime ?? Date())
-            self.timers[index].remainingPercentage = 1 - self.timers[index].timeElapsed / self.timers[index].duration
-            
-            if self.timers[index].timeElapsed < self.timers[index].duration {
-                let remainingTime = self.timers[index].duration - self.timers[index].timeElapsed
-                self.timers[index].displayedTime = remainingTime.asHoursMinutesSeconds
-            } else {
-                self.stopTimer(self.timers[index])
+        if isActive {
+            if self.timers[index].isRunning && !self.timers[index].isPaused {
+                self.timers[index].timeElapsed = Date().timeIntervalSince(self.timers[index].startTime ?? Date())
+                self.timers[index].remainingPercentage = 1 - self.timers[index].timeElapsed / self.timers[index].duration
+                
+                if self.timers[index].timeElapsed < self.timers[index].duration {
+                    let remainingTime = self.timers[index].duration - self.timers[index].timeElapsed
+                    self.timers[index].displayedTime = remainingTime.asHoursMinutesSeconds
+                } else {
+                    self.stopTimer(self.timers[index])
+                }
             }
         }
     }
@@ -112,5 +116,15 @@ class TimerManager: ObservableObject {
         timers.removeAll(where: { $0.id == timer.id })
         
         stopClock()
+    }
+    
+    func deleteTimer(indexSet: IndexSet) {
+        timers.remove(atOffsets: indexSet)
+        
+        stopClock()
+    }
+    
+    func moveTimer(fromOffsets: IndexSet, toOffset: Int) {
+        timers.move(fromOffsets: fromOffsets, toOffset: toOffset)
     }
 }
