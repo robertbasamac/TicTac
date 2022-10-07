@@ -10,6 +10,7 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject private var tm: TimerManager
     
+    @State private var editMode = EditMode.inactive
     @State private var showAddtimer: Bool = false
     
     var body: some View {
@@ -22,26 +23,53 @@ struct MainView: View {
                 .onDelete(perform: delete)
                 .onMove(perform: move)
             }
-            .listStyle(.plain)
-            .navigationTitle("Timers")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    EditButton()
+                    editButton
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showAddtimer.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
+                    addButton
+                }
+            }
+            .listStyle(.plain)
+            .navigationTitle("Timers")
+            .environment(\.editMode, $editMode)
+            .onChange(of: tm.timers.count) { newValue in
+                if editMode == .active && tm.timers.count == 0 {
+                    editMode = .inactive
                 }
             }
             .sheet(isPresented: $showAddtimer) {
                 AddTimerView()
-//                    .interactiveDismissDisabled()
                     .environmentObject(tm)
+                    .environment(\.editMode, $editMode)
             }
+        }
+    }
+    
+    private var editButton: some View {
+        return Group {
+            switch editMode {
+            case .inactive:
+                if tm.timers.count == 0 {
+                    EmptyView()
+                } else {
+                    EditButton()
+                }
+            case .active:
+                EditButton()
+            default:
+                EmptyView()
+            }
+        }
+    }
+    
+    private var addButton: some View {
+        Button {
+            showAddtimer.toggle()
+        } label: {
+            Image(systemName: "plus")
         }
     }
     
@@ -61,4 +89,3 @@ struct StopwatchView_Previews: PreviewProvider {
             .preferredColorScheme(.dark)
     }
 }
-

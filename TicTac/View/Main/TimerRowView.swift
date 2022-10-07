@@ -23,7 +23,7 @@ struct TimerRowView: View {
                 timerDurationView
             }
             
-            if editMode?.wrappedValue.isEditing != true {
+            if editMode?.wrappedValue == .inactive {
                 VStack(spacing: 4) {
                     CircleButtonView(iconName: "xmark", foregroundColor: .white, backgroundColor: .gray)
                         .onTapGesture {

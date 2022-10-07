@@ -12,6 +12,7 @@ struct AddTimerView: View {
     @EnvironmentObject private var tm: TimerManager
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.editMode) private var editMode
     
     @State private var secondsSelection: Int = 0
     @State private var minutesSelection: Int = 0
@@ -61,10 +62,11 @@ struct AddTimerView: View {
                 }
             }
         }
-        .onAppear{
+        .onAppear {
             tm.isActive = false
+            editMode?.wrappedValue = .inactive
         }
-        .onWillDisappear{
+        .onWillDisappear {
             tm.isActive = true
         }
     }
