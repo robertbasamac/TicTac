@@ -17,6 +17,8 @@ struct AddTimerView: View {
     @State private var minutesSelection: Int = 0
     @State private var hoursSelection: Int = 0
     
+    @State private var label: String = ""
+    
     private var seconds: [Int] = [Int](0..<60)
     private var minutes: [Int] = [Int](0..<60)
     private var hours: [Int] = [Int](0..<24)
@@ -32,7 +34,10 @@ struct AddTimerView: View {
                 .padding(.horizontal, 20)
 //                .animation(.default, value: UUID())
 //                .frame(width: 300, height: 300)
-                Spacer()
+
+                List {
+                    TextField("Label", text: $label)
+                }
             }
             .navigationTitle("Add Timer")
             .navigationBarTitleDisplayMode(.inline)
@@ -47,7 +52,7 @@ struct AddTimerView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        tm.createTimer(title: "Timer added from AddTimerView", duration: getPickerDurationAsSeconds())
+                        tm.createTimer(title: label == "" ? "Label" : label, duration: getPickerDurationAsSeconds())
                         dismiss()
                     } label: {
                         Text("Save")
@@ -68,6 +73,7 @@ struct AddTimerView: View {
 struct AddTimerView_Previews: PreviewProvider {
     static var previews: some View {
         AddTimerView()
+            .environmentObject(TimerManager())
     }
 }
 
