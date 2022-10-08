@@ -8,26 +8,61 @@
 import SwiftUI
 
 struct CircleButtonView: View {
+        
+    enum ButtonStyle {
+        case start
+        case pause
+        case reset
+        
+        var iconName: String {
+            switch self {
+            case .start:
+                return "play.fill"
+            case .pause:
+                return "pause.fill"
+            case .reset:
+                return "xmark"
+            }
+        }
+                
+        var foregroundColor: Color {
+            switch self {
+            case .start:
+                return .green
+            case .pause:
+                return .orange
+            case .reset:
+                return .white
+            }
+        }
+        
+        var backgroundColor: Color {
+            switch self {
+            case .start:
+                return .green
+            case .pause:
+                return .orange
+            case .reset:
+                return .gray
+            }
+        }
+    }
     
-    private let iconName: String
-    private let foregroundColor: Color
-    private let backgroundColor: Color
+    private var style: ButtonStyle
     
-    init(iconName: String, foregroundColor: Color, backgroundColor: Color) {
-        self.iconName = iconName
-        self.foregroundColor = foregroundColor
-        self.backgroundColor = backgroundColor
+    init(style: ButtonStyle) {
+        self.style = style
     }
     
     var body: some View {
-        Image(systemName: iconName)
+        Image(systemName: style.iconName)
             .font(.system(size: 18, weight: .medium, design: .default))
-            .foregroundColor(foregroundColor)
+            .foregroundColor(style.foregroundColor)
             .frame(width: 45, height: 45)
             .background(
                 Circle()
                     .foregroundStyle(.tertiary)
-                    .foregroundColor(backgroundColor)
+                    .foregroundColor(style.backgroundColor)
             )
             .padding(4)
     }
@@ -35,7 +70,7 @@ struct CircleButtonView: View {
 
 struct CircleButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        CircleButtonView(iconName: "play.fill", foregroundColor: .green, backgroundColor: .green)
+        CircleButtonView(style: .start)
             .previewLayout(.sizeThatFits)
     }
 }

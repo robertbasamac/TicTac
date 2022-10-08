@@ -25,14 +25,12 @@ struct TimerRowView: View {
             
             if editMode?.wrappedValue == .inactive {
                 VStack(spacing: 4) {
-                    CircleButtonView(iconName: "xmark", foregroundColor: .white, backgroundColor: .gray)
+                    CircleButtonView(style: .reset)
                         .onTapGesture {
                             tm.stopTimer(timer)
                         }
                     
-                    CircleButtonView(iconName: timer.isRunning != timer.isPaused ? "pause.fill" : "play.fill",
-                                     foregroundColor: timer.isRunning != timer.isPaused ? .orange : .green,
-                                     backgroundColor: timer.isRunning != timer.isPaused ? .orange : .green)
+                    CircleButtonView(style: timer.isRunning != timer.isPaused ? .pause : .start)
                         .onTapGesture {
                             timer.isRunning ?
                             (timer.isPaused ?

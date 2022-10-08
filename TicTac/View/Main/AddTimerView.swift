@@ -53,7 +53,7 @@ struct AddTimerView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        tm.createTimer(title: label == "" ? "Label" : label, duration: getPickerDurationAsSeconds())
+                        tm.createTimer(title: label == "" ? "Timer" : label, duration: getPickerDurationAsSeconds())
                         dismiss()
                     } label: {
                         Text("Save")
