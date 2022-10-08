@@ -28,7 +28,7 @@ struct TimerModel: Identifiable {
     var remainingPercentage: Double = 1
     var isRunning: Bool = false
     var isPaused: Bool = false
-    var displayedTime: String = ""
+    var displayedTime: String = 0.asHoursMinutesSeconds
     
     init(title: String, duration: Double) {
         self.duration = duration
