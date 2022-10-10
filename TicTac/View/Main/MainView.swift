@@ -46,6 +46,9 @@ struct MainView: View {
                     .environment(\.editMode, $editMode)
             }
         }
+        .onAppear {
+            NotificationManager.instance.requestAuthorization()
+        }
     }
     
     private var editButton: some View {

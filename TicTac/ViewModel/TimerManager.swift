@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class TimerManager: ObservableObject {
     
@@ -47,15 +48,16 @@ class TimerManager: ObservableObject {
     
     private func updateTimer(forIndex index: Int) {
         if isActive {
-            if self.timers[index].isRunning && !self.timers[index].isPaused {
-                self.timers[index].timeElapsed = Date().timeIntervalSince(self.timers[index].startTime ?? Date())
-                self.timers[index].remainingPercentage = 1 - self.timers[index].timeElapsed / self.timers[index].duration
+            if timers[index].isRunning && !timers[index].isPaused {
+                timers[index].timeElapsed = Date().timeIntervalSince(timers[index].startTime ?? Date())
                 
-                if self.timers[index].timeElapsed < self.timers[index].duration {
-                    let remainingTime = self.timers[index].duration - self.timers[index].timeElapsed
-                    self.timers[index].displayedTime = remainingTime.asHoursMinutesSeconds
+                timers[index].remainingPercentage = 1 - timers[index].timeElapsed / timers[index].duration
+                
+                if timers[index].timeElapsed < timers[index].duration {
+                    let remainingTime = timers[index].duration - timers[index].timeElapsed
+                    timers[index].displayedTime = remainingTime.asHoursMinutesSeconds
                 } else {
-                    self.stopTimer(self.timers[index])
+                    stopTimer(timers[index])
                 }
             }
         }
@@ -75,6 +77,8 @@ class TimerManager: ObservableObject {
         if let index = timers.firstIndex(where: { $0.id == timer.id }) {
             timers[index].startTime = Date()
             timers[index].isRunning = true
+            
+            NotificationManager.instance.scheduleNotification(title: timers[index].title, alarmTime: timers[index].alarmTime ?? Date())
         }
     }
     
