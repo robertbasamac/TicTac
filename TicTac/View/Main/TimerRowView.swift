@@ -72,8 +72,12 @@ extension TimerRowView {
                                 style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
                         .rotationEffect(Angle(degrees: -90))
                 )
-            
-            ZStack {
+                         
+            VStack {
+                Text("\(timer.duration.asHoursMinutesSecondsShorted)")
+                    .font(.system(size: 12, weight: .semibold, design: .default))
+                    .foregroundColor(.gray)
+                
                 Text("\(timer.displayedTime)")
                     .font(.system(size: 22, weight: .none, design: .default))
                 
@@ -84,7 +88,6 @@ extension TimerRowView {
                 .font(.system(size: 12, weight: .none, design: .default))
                 .foregroundStyle(timer.isPaused ? .tertiary : .primary)
                 .foregroundColor(.gray)
-                .offset(y: 20)
             }
         }
         .padding(4)
