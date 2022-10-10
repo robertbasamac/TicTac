@@ -13,7 +13,7 @@ class TimerManager: ObservableObject {
     
     @Published var timers: [TimerModel] = []
 
-    @Published var isActive: Bool = false
+    @Published var isActive: Bool = true
     
     @Published private var clock: AnyCancellable?
     

@@ -1,5 +1,5 @@
 //
-//  StopwatchView.swift
+//  MainView.swift
 //  TicTac
 //
 //  Created by Robert Basamac on 27.09.2022.
@@ -36,7 +36,7 @@ struct MainView: View {
             .navigationTitle("Timers")
             .environment(\.editMode, $editMode)
             .onChange(of: tm.timers.count) { newValue in
-                if editMode == .active && tm.timers.count == 0 {
+                if editMode == .active && newValue == 0 {
                     editMode = .inactive
                 }
             }

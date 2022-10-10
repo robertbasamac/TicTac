@@ -17,29 +17,9 @@ struct TimerRowView: View {
         HStack(spacing: 8) {
             titleSection
             
-            if timer.isRunning {
-                progressCircleView
-            } else {
-                timerDurationView
-            }
+            timerSection
             
-            if editMode?.wrappedValue == .inactive {
-                VStack(spacing: 4) {
-                    CircleButtonView(style: .reset)
-                        .onTapGesture {
-                            tm.stopTimer(timer)
-                        }
-                    
-                    CircleButtonView(style: timer.isRunning != timer.isPaused ? .pause : .start)
-                        .onTapGesture {
-                            timer.isRunning ?
-                            (timer.isPaused ?
-                             tm.resumeTimer(timer) :
-                                tm.pauseTimer(timer))
-                            : tm.startTimer(timer)
-                        }
-                }
-            }
+            buttonsSection
         }
     }
 }
@@ -59,6 +39,36 @@ extension TimerRowView {
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineLimit(2)
             .minimumScaleFactor(0.8)
+    }
+    
+    @ViewBuilder private var timerSection: some View {
+        if timer.isRunning {
+            progressCircleView
+        } else {
+            timerDurationView
+        }
+    }
+    
+    @ViewBuilder private var buttonsSection: some View {
+        if editMode?.wrappedValue == .inactive {
+            VStack(spacing: 4) {
+                if timer.isRunning {
+                    CircleButtonView(style: .reset)
+                        .onTapGesture {
+                            tm.stopTimer(timer)
+                        }
+                }
+                
+                CircleButtonView(style: timer.isRunning != timer.isPaused ? .pause : .start)
+                    .onTapGesture {
+                        timer.isRunning ?
+                        (timer.isPaused ?
+                         tm.resumeTimer(timer) :
+                            tm.pauseTimer(timer))
+                        : tm.startTimer(timer)
+                    }
+            }
+        }
     }
         
     private var progressCircleView: some View {
@@ -95,8 +105,11 @@ extension TimerRowView {
     }
     
     private var timerDurationView: some View {
-        Text("\(timer.duration.asHoursMinutesSeconds)")
-            .font(.system(size: 22, weight: .none, design: .rounded))
+        Text("\(timer.duration.asHoursMinutesSecondsShorted)")
+            .font(.system(size: 22, weight: .none, design: .default))
+            .frame(width: 110, height: 45)
+            .background(.gray.opacity(0.2), in: Capsule())
             .frame(width: 110, height: 110)
+            .buttonStyle(.borderedProminent)
     }
 }
