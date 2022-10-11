@@ -63,8 +63,8 @@ class TimerManager: ObservableObject {
         }
     }
     
-    func createTimer(title: String, duration: Double) {
-        let timer = TimerModel(title: title, duration: duration)
+    func createTimer(title: String, message: String, duration: Double) {
+        let timer = TimerModel(title: title, message: message, duration: duration)
         
         timers.append(timer)
         
@@ -78,7 +78,10 @@ class TimerManager: ObservableObject {
             timers[index].startTime = Date()
             timers[index].isRunning = true
             
-            NotificationManager.instance.scheduleNotification(title: timers[index].title, alarmTime: timers[index].alarmTime ?? Date())
+            NotificationManager.instance.scheduleNotification(
+                title: timers[index].title,
+                message: timers[index].message,
+                alarmTime: timers[index].alarmTime ?? Date())
         }
     }
     

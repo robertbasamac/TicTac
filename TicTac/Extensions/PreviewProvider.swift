@@ -23,5 +23,5 @@ class DeveloperPreview {
     
     let tm: TimerManager = TimerManager()
     
-    let timer = TimerModel(title: "Timer title", duration: 36648)
+    let timer = TimerModel(title: "Timer title", message: "This is a message", duration: 36648)
 }

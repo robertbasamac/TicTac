@@ -14,30 +14,41 @@ struct AddTimerView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.editMode) private var editMode
     
-    @State private var secondsSelection: Int = 0
-    @State private var minutesSelection: Int = 0
     @State private var hoursSelection: Int = 0
+    @State private var minutesSelection: Int = 0
+    @State private var secondsSelection: Int = 0
     
-    @State private var label: String = ""
+    @State private var title: String = ""
+    @State private var message: String = ""
     
-    private var seconds: [Int] = [Int](0..<60)
-    private var minutes: [Int] = [Int](0..<60)
-    private var hours: [Int] = [Int](0..<24)
+//    private var seconds: [Int] = [Int](0..<60)
+//    private var minutes: [Int] = [Int](0..<60)
+//    private var hours: [Int] = [Int](0..<24)
+    
+    private let data: [[String]] = [
+        Array(0...23).map { "\($0)" },
+        Array(0...59).map { "\($0)" },
+        Array(0...59).map { "\($0)" }
+    ]
+    
+    @State private var selections: [Int] = [0, 0, 0]
     
     var body: some View {
         NavigationStack {
             VStack {
-                HStack(spacing: 20) {
+//                HStack(spacing: 20) {
 //                    hoursPicker
 //                    minutesPicker
-                    secondsPicker
-                }
-                .padding(.horizontal, 20)
+//                    secondsPicker
+                    PickerView(data: data, selections: $selections)
+//                }
+//                .padding(.horizontal, 20)
 //                .animation(.default, value: UUID())
 //                .frame(width: 300, height: 300)
 
                 List {
-                    TextField("Label", text: $label)
+                    TextField("Label", text: $title)
+                    TextField("Alarm message", text: $message)
                 }
             }
             .navigationTitle("Add Timer")
@@ -53,7 +64,7 @@ struct AddTimerView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        tm.createTimer(title: label.isEmpty ? "Timer" : label, duration: getPickerDurationAsSeconds())
+                        tm.createTimer(title: title.isEmpty ? "Timer" : title, message: message, duration: getPickerDurationAsSeconds())
                         dismiss()
                     } label: {
                         Text("Save")
@@ -81,78 +92,78 @@ struct AddTimerView_Previews: PreviewProvider {
 
 extension AddTimerView {
     
-    private var hoursPicker: some View {
-        ZStack {
-            Picker(selection: $hoursSelection) {
-                ForEach(hours, id: \.self) { index in
-                    Text("\(index)").tag(index)
-                        .font(.title3)
-                        .frame(width: 30, alignment: .trailing)
-                        .offset(x: -28)
-                }
-            } label: {
-                Text("Hours")
-            }
-            .pickerStyle(.wheel)
-            .labelsHidden()
-            
-            Text(hoursSelection == 1 ? "hour" : "hours")
-                .font(.headline)
-                .frame(width: 70, alignment: .leading)
-                .offset(x: 24)
-        }
-    }
-    
-    private var minutesPicker: some View {
-        ZStack {
-            Picker(selection: $minutesSelection) {
-                ForEach(minutes, id: \.self) { index in
-                    Text("\(index)").tag(index)
-                        .font(.title3)
-                        .frame(width: 30, alignment: .trailing)
-                        .offset(x: -22)
-                }
-            } label: {
-                Text("Minutes")
-            }
-            .pickerStyle(.wheel)
-            .labelsHidden()
-            
-            Text("min")
-                .font(.headline)
-                .frame(width: 50, alignment: .leading)
-                .offset(x: 20)
-        }
-    }
-    
-    private var secondsPicker: some View {
-        ZStack(alignment: .center) {
-            Picker(selection: $secondsSelection) {
-                ForEach(seconds, id: \.self) { index in
-                    Text("\(index)").tag(index)
-                        .font(.title3)
-                        .frame(width: 30, alignment: .trailing)
-                        .offset(x: -22)
-                }
-            } label: {
-                Text("Seconds")
-            }
-            .pickerStyle(.wheel)
-            .labelsHidden()
-            
-            Text("sec")
-                .font(.headline)
-                .frame(width: 50, alignment: .leading)
-                .offset(x: 20)
-        }
-    }
+//    private var hoursPicker: some View {
+//        ZStack {
+//            Picker(selection: $hoursSelection) {
+//                ForEach(hours, id: \.self) { index in
+//                    Text("\(index)").tag(index)
+//                        .font(.title3)
+//                        .frame(width: 30, alignment: .trailing)
+//                        .offset(x: -28)
+//                }
+//            } label: {
+//                Text("Hours")
+//            }
+//            .pickerStyle(.wheel)
+//            .labelsHidden()
+//
+//            Text(hoursSelection == 1 ? "hour" : "hours")
+//                .font(.headline)
+//                .frame(width: 70, alignment: .leading)
+//                .offset(x: 24)
+//        }
+//    }
+//
+//    private var minutesPicker: some View {
+//        ZStack {
+//            Picker(selection: $minutesSelection) {
+//                ForEach(minutes, id: \.self) { index in
+//                    Text("\(index)").tag(index)
+//                        .font(.title3)
+//                        .frame(width: 30, alignment: .trailing)
+//                        .offset(x: -22)
+//                }
+//            } label: {
+//                Text("Minutes")
+//            }
+//            .pickerStyle(.wheel)
+//            .labelsHidden()
+//
+//            Text("min")
+//                .font(.headline)
+//                .frame(width: 50, alignment: .leading)
+//                .offset(x: 20)
+//        }
+//    }
+//
+//    private var secondsPicker: some View {
+//        ZStack(alignment: .center) {
+//            Picker(selection: $secondsSelection) {
+//                ForEach(seconds, id: \.self) { index in
+//                    Text("\(index)").tag(index)
+//                        .font(.title3)
+//                        .frame(width: 30, alignment: .trailing)
+//                        .offset(x: -22)
+//                }
+//            } label: {
+//                Text("Seconds")
+//            }
+//            .pickerStyle(.wheel)
+//            .labelsHidden()
+//
+//            Text("sec")
+//                .font(.headline)
+//                .frame(width: 50, alignment: .leading)
+//                .offset(x: 20)
+//        }
+//    }
     
     private func getPickerDurationAsSeconds() -> Double {
         var duration: Double = 0
         
-        duration += Double(hoursSelection) * 60 * 60
-        duration += Double(minutesSelection) * 60
-        duration += Double(secondsSelection)
+        duration += Double(selections[0] * 3600)
+        duration += Double(selections[1] * 60)
+        duration += Double(selections[2])
         
         return duration
     }

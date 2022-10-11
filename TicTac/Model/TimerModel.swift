@@ -11,6 +11,7 @@ import Combine
 struct TimerModel: Identifiable {
     var id: String = UUID().uuidString
     var title: String
+    var message: String
     var startTime: Date? {
         didSet {
             alarmTime = Date(timeInterval: duration, since: startTime ?? Date())
@@ -30,9 +31,10 @@ struct TimerModel: Identifiable {
     var isPaused: Bool = false
     var displayedTime: String = 0.asHoursMinutesSeconds
     
-    init(title: String, duration: Double) {
+    init(title: String, message: String, duration: Double) {
         self.duration = duration
         self.title = title
+        self.message = message
         self.displayedTime = self.duration.asHoursMinutesSeconds
     }
 }

@@ -13,7 +13,6 @@ class NotificationManager: ObservableObject {
     static let instance = NotificationManager()
     
     func requestAuthorization() {
-        
         let options: UNAuthorizationOptions = [.alert, .sound, .badge]
         
         UNUserNotificationCenter.current().requestAuthorization(options: options) { (success, error) in
@@ -25,12 +24,11 @@ class NotificationManager: ObservableObject {
         }
     }
     
-    func scheduleNotification(title: String, alarmTime: Date) {
-        
+    func scheduleNotification(title: String, message: String, alarmTime: Date) {
         let content = UNMutableNotificationContent()
         
         content.title = title
-//        content.subtitle = "Subtitle"
+        content.subtitle = message
         content.sound = .default
 //        content.badge = 1
 
