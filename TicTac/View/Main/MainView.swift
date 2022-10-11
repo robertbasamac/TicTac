@@ -20,8 +20,8 @@ struct MainView: View {
                     TimerRowView(timer: timer)
                         .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
                 }
-                .onDelete(perform: delete)
-                .onMove(perform: move)
+                .onDelete(perform: tm.deleteTimer)
+                .onMove(perform: tm.moveTimer)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -74,14 +74,6 @@ struct MainView: View {
         } label: {
             Image(systemName: "plus")
         }
-    }
-    
-    private func delete(indexSet: IndexSet) {
-        tm.deleteTimer(indexSet: indexSet)
-    }
-    
-    private func move(indices: IndexSet, newOffset: Int) {
-        tm.moveTimer(fromOffsets: indices, toOffset: newOffset)
     }
 }
 
