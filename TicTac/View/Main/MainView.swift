@@ -80,7 +80,7 @@ struct MainView: View {
 struct StopwatchView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
-            .environmentObject(TimerManager())
+            .environmentObject(dev.tm)
             .preferredColorScheme(.dark)
     }
 }

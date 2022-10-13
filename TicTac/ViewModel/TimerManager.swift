@@ -12,6 +12,7 @@ import SwiftUI
 class TimerManager: ObservableObject {
     
     @Published var timers: [TimerModel] = []
+    @Published var categories: [CategoryModel] = []
 
     @Published var isActive: Bool = true
     
@@ -63,8 +64,8 @@ class TimerManager: ObservableObject {
         }
     }
     
-    func createTimer(title: String, message: String, duration: Double) {
-        let timer = TimerModel(title: title, message: message, duration: duration)
+    func createTimer(title: String, message: String, duration: Double, category: CategoryModel) {
+        let timer = TimerModel(title: title, message: message, duration: duration, category: category)
         
         timers.append(timer)
         
@@ -133,5 +134,11 @@ class TimerManager: ObservableObject {
     
     func moveTimer(fromOffsets: IndexSet, toOffset: Int) {
         timers.move(fromOffsets: fromOffsets, toOffset: toOffset)
+    }
+    
+    func createCategory(title: String, color: Color) {
+        let category: CategoryModel = CategoryModel(title: title, color: color)
+        
+        categories.append(category)
     }
 }

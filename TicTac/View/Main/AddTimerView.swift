@@ -20,6 +20,7 @@ struct AddTimerView: View {
     
     @State private var title: String = ""
     @State private var message: String = ""
+    @State private var category: CategoryModel = CategoryModel(title: "", color: .white)
     
 //    private var seconds: [Int] = [Int](0..<60)
 //    private var minutes: [Int] = [Int](0..<60)
@@ -46,9 +47,27 @@ struct AddTimerView: View {
 //                .animation(.default, value: UUID())
 //                .frame(width: 300, height: 300)
 
-                List {
-                    TextField("Label", text: $title)
-                    TextField("Alarm message", text: $message)
+                Form {
+                    HStack {
+                        Text("Title")
+                        
+                        TextField("Timer", text: $title)
+                            .multilineTextAlignment(.trailing)
+                    }
+
+                    HStack {
+                        Text("Alarm message")
+                        
+                        TextField("Message", text: $message)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    
+                    NavigationLink {
+                        SelectCategoryView(category: $category)
+                    } label: {
+                        Text("Category")
+                            .badge(category.title.isEmpty ? "None" : category.title)
+                    }
                 }
             }
             .navigationTitle("Add Timer")
@@ -64,7 +83,7 @@ struct AddTimerView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        tm.createTimer(title: title.isEmpty ? "Timer" : title, message: message, duration: getPickerDurationAsSeconds())
+                        tm.createTimer(title: title.isEmpty ? "Timer" : title, message: message, duration: getPickerDurationAsSeconds(), category: category)
                         dismiss()
                     } label: {
                         Text("Save")
@@ -86,7 +105,7 @@ struct AddTimerView: View {
 struct AddTimerView_Previews: PreviewProvider {
     static var previews: some View {
         AddTimerView()
-            .environmentObject(TimerManager())
+            .environmentObject(dev.tm)
     }
 }
 

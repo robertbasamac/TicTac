@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		093C0B8228F8096C001B6FD0 /* CategoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8128F8096C001B6FD0 /* CategoryRowView.swift */; };
 		09614C7028EB55F50069EE8C /* CircleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09614C6F28EB55F50069EE8C /* CircleButtonView.swift */; };
 		09614C7228EB787D0069EE8C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09614C7128EB787D0069EE8C /* Color.swift */; };
 		0979DA8728ECAC7400478186 /* AddTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0979DA8628ECAC7400478186 /* AddTimerView.swift */; };
@@ -14,6 +15,9 @@
 		09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A339CB28E1C43B00FE7896 /* TicTacApp.swift */; };
 		09A339D028E1C43C00FE7896 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A339CF28E1C43C00FE7896 /* Assets.xcassets */; };
 		09A339D328E1C43C00FE7896 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A339D228E1C43C00FE7896 /* Preview Assets.xcassets */; };
+		09A3F2A928F6DA8400E41DBF /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A3F2A828F6DA8400E41DBF /* CategoryModel.swift */; };
+		09A3F2AB28F72F0D00E41DBF /* SelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A3F2AA28F72F0C00E41DBF /* SelectCategoryView.swift */; };
+		09A3F2B128F7564200E41DBF /* CreateCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A3F2B028F7564200E41DBF /* CreateCategoryView.swift */; };
 		09A6303C28E2FBF6006E9F31 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303B28E2FBF5006E9F31 /* MainView.swift */; };
 		09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303E28E3754E006E9F31 /* TimeInterval.swift */; };
 		09A6304228E38BB5006E9F31 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6304128E38BB5006E9F31 /* Date.swift */; };
@@ -26,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		093C0B8128F8096C001B6FD0 /* CategoryRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRowView.swift; sourceTree = "<group>"; };
 		09614C6F28EB55F50069EE8C /* CircleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButtonView.swift; sourceTree = "<group>"; };
 		09614C7128EB787D0069EE8C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0979DA8628ECAC7400478186 /* AddTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTimerView.swift; sourceTree = "<group>"; };
@@ -34,6 +39,9 @@
 		09A339CB28E1C43B00FE7896 /* TicTacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacApp.swift; sourceTree = "<group>"; };
 		09A339CF28E1C43C00FE7896 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		09A339D228E1C43C00FE7896 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		09A3F2A828F6DA8400E41DBF /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
+		09A3F2AA28F72F0C00E41DBF /* SelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCategoryView.swift; sourceTree = "<group>"; };
+		09A3F2B028F7564200E41DBF /* CreateCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryView.swift; sourceTree = "<group>"; };
 		09A6303B28E2FBF5006E9F31 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		09A6303E28E3754E006E9F31 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		09A6304128E38BB5006E9F31 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -111,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				09B4F2B628E4420100451810 /* TimerModel.swift */,
+				09A3F2A828F6DA8400E41DBF /* CategoryModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -147,6 +156,9 @@
 				09A6303B28E2FBF5006E9F31 /* MainView.swift */,
 				09B1404C28EA2CEA00FDBE2B /* TimerRowView.swift */,
 				0979DA8628ECAC7400478186 /* AddTimerView.swift */,
+				09A3F2AA28F72F0C00E41DBF /* SelectCategoryView.swift */,
+				093C0B8128F8096C001B6FD0 /* CategoryRowView.swift */,
+				09A3F2B028F7564200E41DBF /* CreateCategoryView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -240,8 +252,12 @@
 				09B1404D28EA2CEA00FDBE2B /* TimerRowView.swift in Sources */,
 				09B4F2BA28E4434E00451810 /* TimerManager.swift in Sources */,
 				09614C7028EB55F50069EE8C /* CircleButtonView.swift in Sources */,
+				093C0B8228F8096C001B6FD0 /* CategoryRowView.swift in Sources */,
 				09B1404928EA2A1000FDBE2B /* PreviewProvider.swift in Sources */,
+				09A3F2B128F7564200E41DBF /* CreateCategoryView.swift in Sources */,
+				09A3F2AB28F72F0D00E41DBF /* SelectCategoryView.swift in Sources */,
 				0979DA8728ECAC7400478186 /* AddTimerView.swift in Sources */,
+				09A3F2A928F6DA8400E41DBF /* CategoryModel.swift in Sources */,
 				09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

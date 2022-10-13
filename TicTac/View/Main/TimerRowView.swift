@@ -28,17 +28,33 @@ struct TimerRowView_Previews: PreviewProvider {
     static var previews: some View {
         TimerRowView(timer: dev.timer)
             .previewLayout(.sizeThatFits)
+            .frame(height: 110)
     }
 }
 
 extension TimerRowView {
     
     private var titleSection: some View {
-        Text(timer.title)
-            .font(.system(size: 18, weight: .none, design: .default))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .lineLimit(2)
-            .minimumScaleFactor(0.8)
+        VStack(spacing: 0) {
+            HStack {
+                Circle()
+                    .frame(width: 8, height: 8)
+                
+                Text(timer.category.title)
+                    .font(.system(size: 14, weight: .none, design: .default))
+                    .foregroundColor(timer.category.color)
+                    .lineLimit(2)
+                    .padding(.vertical, 2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .foregroundColor(timer.category.color)
+            
+            Text(timer.title)
+                .font(.system(size: 20, weight: .none, design: .default))
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                .lineLimit(2)
+                .minimumScaleFactor(0.8)
+        }
     }
     
     @ViewBuilder private var timerSection: some View {
@@ -74,7 +90,7 @@ extension TimerRowView {
     private var progressCircleView: some View {
         ZStack {
             Circle()
-                .stroke(Color.gray, lineWidth: 4)
+                .stroke(Color.gray.opacity(0.25), lineWidth: 4)
                 .overlay(
                     Circle()
                         .trim(from: 0, to: timer.remainingPercentage)
@@ -108,7 +124,7 @@ extension TimerRowView {
         Text("\(timer.duration.asHoursMinutesSecondsShorted)")
             .font(.system(size: 22, weight: .none, design: .default))
             .frame(width: 110, height: 45)
-            .background(.gray.opacity(0.2), in: Capsule())
+            .background(.gray.opacity(0.25), in: Capsule())
             .frame(width: 110, height: 110)
             .buttonStyle(.borderedProminent)
     }
