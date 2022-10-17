@@ -36,8 +36,7 @@ struct CreateCategoryView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button {
-                    tm.createCategory(title: title, color: color)
-                    
+                    tm.createCategory(category: CategoryModel(title: title, color: color))
                     dismiss()
                 } label: {
                     Text("Save")

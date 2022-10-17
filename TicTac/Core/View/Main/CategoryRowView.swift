@@ -9,17 +9,19 @@ import SwiftUI
 
 struct CategoryRowView: View {
     
-    let category: CategoryModel
-    let selectedCategory: CategoryModel
+    let category: CategoryModel?
+    let selectedCategory: CategoryModel?
     
     var body: some View {
         HStack(spacing: 0) {
-            Circle()
-                .foregroundColor(category.color)
-                .frame(width: 8, height: 8)
-                .frame(minWidth: 30)
+            if let category = category {
+                Circle()
+                    .foregroundColor(category.color)
+                    .frame(width: 8, height: 8)
+                    .frame(minWidth: 30)
+            }
             
-            Text(category.title)
+            Text(category?.title ?? "None")
             
             Spacer()
             

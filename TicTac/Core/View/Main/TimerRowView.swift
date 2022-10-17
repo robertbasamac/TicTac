@@ -36,18 +36,21 @@ extension TimerRowView {
     
     private var titleSection: some View {
         VStack(spacing: 0) {
-            HStack {
-                Circle()
-                    .frame(width: 8, height: 8)
-                
-                Text(timer.category.title)
-                    .font(.system(size: 14, weight: .none, design: .default))
-                    .foregroundColor(timer.category.color)
-                    .lineLimit(2)
-                    .padding(.vertical, 2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            if let category = timer.category {
+                HStack {
+                    Circle()
+                        .frame(width: 8, height: 8)
+                    
+                    Text(category.title)
+                        .font(.system(size: 14, weight: .none, design: .default))
+                        .foregroundColor(category.color)
+                        .lineLimit(2)
+                        .padding(.vertical, 2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .foregroundColor(category.color)
             }
-            .foregroundColor(timer.category.color)
+            
             
             Text(timer.title)
                 .font(.system(size: 20, weight: .none, design: .default))

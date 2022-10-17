@@ -18,8 +18,6 @@ class NotificationManager: ObservableObject {
         UNUserNotificationCenter.current().requestAuthorization(options: options) { (success, error) in
             if let error = error {
                 print("ERROR: \(error)")
-            } else {
-                print("SUCCESS")
             }
         }
     }

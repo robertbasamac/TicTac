@@ -12,7 +12,7 @@ struct SelectCategoryView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var category: CategoryModel
+    @Binding var category: CategoryModel?
     
     var body: some View {
         Form {
@@ -25,12 +25,20 @@ struct SelectCategoryView: View {
             }
             
             Section {
+                categoryRowView()
+                    .onTapGesture {
+                        self.category = nil
+                    }
+            }
+            
+            Section {
                 ForEach(tm.categories) { category in
                     categoryRowView(category: category)
                         .onTapGesture {
                             self.category = category
                         }
                 }
+                .onDelete(perform: tm.deleteCategory)
             } header: {
                 if !tm.categories.isEmpty {
                     Text("Categories")
@@ -41,14 +49,16 @@ struct SelectCategoryView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    private func categoryRowView(category: CategoryModel) -> some View {
+    private func categoryRowView(category: CategoryModel? = nil) -> some View {
         HStack(spacing: 0) {
-            Circle()
-                .foregroundColor(category.color)
-                .frame(width: 8, height: 8)
-                .frame(minWidth: 30)
-            
-            Text(category.title)
+            if let sefeCategory = category {
+                Circle()
+                    .foregroundColor(sefeCategory.color)
+                    .frame(width: 8, height: 8)
+                    .frame(minWidth: 30)
+            }
+                       
+            Text(category?.title ?? "None")
             
             Spacer()
             

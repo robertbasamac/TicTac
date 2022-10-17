@@ -10,6 +10,6 @@ import SwiftUI
 
 struct CategoryModel: Identifiable, Equatable {
     var id: String = UUID().uuidString
-    var title: String
-    var color: Color
+    var title: String = ""
+    var color: Color = .white
 }

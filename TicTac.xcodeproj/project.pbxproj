@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		093C0B8228F8096C001B6FD0 /* CategoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8128F8096C001B6FD0 /* CategoryRowView.swift */; };
+		093C0B8528F81248001B6FD0 /* CoreDataContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8328F81248001B6FD0 /* CoreDataContainer.xcdatamodeld */; };
+		093C0B8A28F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8628F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift */; };
+		093C0B8B28F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8728F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift */; };
+		093C0B8C28F83DFF001B6FD0 /* TimerEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8828F83DFF001B6FD0 /* TimerEntity+CoreDataClass.swift */; };
+		093C0B8D28F83DFF001B6FD0 /* TimerEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8928F83DFF001B6FD0 /* TimerEntity+CoreDataProperties.swift */; };
+		093C0B9228F83EEB001B6FD0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B9128F83EEB001B6FD0 /* CoreDataManager.swift */; };
 		09614C7028EB55F50069EE8C /* CircleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09614C6F28EB55F50069EE8C /* CircleButtonView.swift */; };
 		09614C7228EB787D0069EE8C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09614C7128EB787D0069EE8C /* Color.swift */; };
 		0979DA8728ECAC7400478186 /* AddTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0979DA8628ECAC7400478186 /* AddTimerView.swift */; };
@@ -18,6 +24,7 @@
 		09A3F2A928F6DA8400E41DBF /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A3F2A828F6DA8400E41DBF /* CategoryModel.swift */; };
 		09A3F2AB28F72F0D00E41DBF /* SelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A3F2AA28F72F0C00E41DBF /* SelectCategoryView.swift */; };
 		09A3F2B128F7564200E41DBF /* CreateCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A3F2B028F7564200E41DBF /* CreateCategoryView.swift */; };
+		09A44EE728F98D290061026D /* UIColorTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A44EE628F98D290061026D /* UIColorTransformer.swift */; };
 		09A6303C28E2FBF6006E9F31 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303B28E2FBF5006E9F31 /* MainView.swift */; };
 		09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303E28E3754E006E9F31 /* TimeInterval.swift */; };
 		09A6304228E38BB5006E9F31 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6304128E38BB5006E9F31 /* Date.swift */; };
@@ -31,6 +38,12 @@
 
 /* Begin PBXFileReference section */
 		093C0B8128F8096C001B6FD0 /* CategoryRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRowView.swift; sourceTree = "<group>"; };
+		093C0B8428F81248001B6FD0 /* CoreDataContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataContainer.xcdatamodel; sourceTree = "<group>"; };
+		093C0B8628F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		093C0B8728F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		093C0B8828F83DFF001B6FD0 /* TimerEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimerEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		093C0B8928F83DFF001B6FD0 /* TimerEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimerEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		093C0B9128F83EEB001B6FD0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		09614C6F28EB55F50069EE8C /* CircleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButtonView.swift; sourceTree = "<group>"; };
 		09614C7128EB787D0069EE8C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0979DA8628ECAC7400478186 /* AddTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTimerView.swift; sourceTree = "<group>"; };
@@ -42,6 +55,7 @@
 		09A3F2A828F6DA8400E41DBF /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		09A3F2AA28F72F0C00E41DBF /* SelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCategoryView.swift; sourceTree = "<group>"; };
 		09A3F2B028F7564200E41DBF /* CreateCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryView.swift; sourceTree = "<group>"; };
+		09A44EE628F98D290061026D /* UIColorTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorTransformer.swift; sourceTree = "<group>"; };
 		09A6303B28E2FBF5006E9F31 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		09A6303E28E3754E006E9F31 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		09A6304128E38BB5006E9F31 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -64,6 +78,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		093C0B8F28F83EA4001B6FD0 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				093C0B9128F83EEB001B6FD0 /* CoreDataManager.swift */,
+				093C0B8328F81248001B6FD0 /* CoreDataContainer.xcdatamodeld */,
+				093C0B9028F83EDB001B6FD0 /* Model */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		093C0B9028F83EDB001B6FD0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				093C0B8628F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift */,
+				093C0B8728F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift */,
+				093C0B8828F83DFF001B6FD0 /* TimerEntity+CoreDataClass.swift */,
+				093C0B8928F83DFF001B6FD0 /* TimerEntity+CoreDataProperties.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		093C0B9328F8442A001B6FD0 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				09A6304028E38976006E9F31 /* Model */,
+				09A6304328E392B4006E9F31 /* View */,
+				09B4F2B828E4433E00451810 /* ViewModel */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		09A339BF28E1C43B00FE7896 = {
 			isa = PBXGroup;
 			children = (
@@ -86,9 +131,8 @@
 				09A339CB28E1C43B00FE7896 /* TicTacApp.swift */,
 				09A6303D28E37543006E9F31 /* Extensions */,
 				09A725E828F1D74A0037F9EA /* Utilities */,
-				09A6304028E38976006E9F31 /* Model */,
-				09A6304328E392B4006E9F31 /* View */,
-				09B4F2B828E4433E00451810 /* ViewModel */,
+				093C0B8F28F83EA4001B6FD0 /* CoreData */,
+				093C0B9328F8442A001B6FD0 /* Core */,
 				09A339CF28E1C43C00FE7896 /* Assets.xcassets */,
 				09A339D128E1C43C00FE7896 /* Preview Content */,
 			);
@@ -137,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				09A725E928F1D7590037F9EA /* NotificationManager.swift */,
+				09A44EE628F98D290061026D /* UIColorTransformer.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -246,18 +291,25 @@
 				099C48BE28F5CE7700358AE1 /* PickerView.swift in Sources */,
 				09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */,
 				09614C7228EB787D0069EE8C /* Color.swift in Sources */,
+				09A44EE728F98D290061026D /* UIColorTransformer.swift in Sources */,
 				09A725EA28F1D7590037F9EA /* NotificationManager.swift in Sources */,
+				093C0B9228F83EEB001B6FD0 /* CoreDataManager.swift in Sources */,
 				09B4F2B728E4420100451810 /* TimerModel.swift in Sources */,
 				09A6303C28E2FBF6006E9F31 /* MainView.swift in Sources */,
 				09B1404D28EA2CEA00FDBE2B /* TimerRowView.swift in Sources */,
 				09B4F2BA28E4434E00451810 /* TimerManager.swift in Sources */,
+				093C0B8C28F83DFF001B6FD0 /* TimerEntity+CoreDataClass.swift in Sources */,
 				09614C7028EB55F50069EE8C /* CircleButtonView.swift in Sources */,
 				093C0B8228F8096C001B6FD0 /* CategoryRowView.swift in Sources */,
+				093C0B8B28F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift in Sources */,
+				093C0B8A28F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift in Sources */,
 				09B1404928EA2A1000FDBE2B /* PreviewProvider.swift in Sources */,
+				093C0B8528F81248001B6FD0 /* CoreDataContainer.xcdatamodeld in Sources */,
 				09A3F2B128F7564200E41DBF /* CreateCategoryView.swift in Sources */,
 				09A3F2AB28F72F0D00E41DBF /* SelectCategoryView.swift in Sources */,
 				0979DA8728ECAC7400478186 /* AddTimerView.swift in Sources */,
 				09A3F2A928F6DA8400E41DBF /* CategoryModel.swift in Sources */,
+				093C0B8D28F83DFF001B6FD0 /* TimerEntity+CoreDataProperties.swift in Sources */,
 				09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,6 +511,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		093C0B8328F81248001B6FD0 /* CoreDataContainer.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				093C0B8428F81248001B6FD0 /* CoreDataContainer.xcdatamodel */,
+			);
+			currentVersion = 093C0B8428F81248001B6FD0 /* CoreDataContainer.xcdatamodel */;
+			path = CoreDataContainer.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 09A339C028E1C43B00FE7896 /* Project object */;
 }
