@@ -21,6 +21,7 @@ struct TimerRowView: View {
             
             buttonsSection
         }
+        .background(Color(uiColor: .systemBackground))
     }
 }
 

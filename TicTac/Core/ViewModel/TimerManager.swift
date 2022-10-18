@@ -37,8 +37,37 @@ class TimerManager: ObservableObject {
     }
     
     // MARK: - Timers Handling
-    func createTimer(timer: TimerModel) {
+    func createTimer(_ timer: TimerModel) {
         let entity = TimerEntity(context: coreDataManager.context)
+        
+        entity.id = timer.id
+        entity.order = (timerEntities.last?.order ?? 0) + 1
+        entity.title = timer.title == "" ? "Timer" : timer.title
+        entity.duration = timer.duration
+        entity.isRunning = timer.isRunning
+        entity.isPaused = timer.isPaused
+        
+        if let category = timer.category {
+            let categoryEntities: [CategoryEntity] = fetchCategoryEntities(forId: category.id)
+            
+            guard !categoryEntities.isEmpty, let categoryEntity = categoryEntities.first else {
+                print("No Category with id = \(timer.id) found.")
+                return
+            }
+            
+            entity.category = categoryEntity
+        }
+                
+        startTimer(timer)
+    }
+    
+    func editTimer(_ timer: TimerModel) {
+        let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
+        
+        guard !entities.isEmpty, let entity = entities.first else {
+            print("No Timer with id = \(timer.id) found.")
+            return
+        }
         
         entity.id = timer.id
         entity.order = (timerEntities.last?.order ?? 0) + 1
@@ -57,8 +86,6 @@ class TimerManager: ObservableObject {
             
             entity.category = categoryEntity
         }
-        
-        save()
         
         startTimer(timer)
     }
@@ -141,6 +168,18 @@ class TimerManager: ObservableObject {
         stopClock()
     }
     
+    func deleteTimer(_ timer: TimerModel) {
+        let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
+        
+        guard !entities.isEmpty, let entity = entities.first else {
+            print("No Timer with id = \(timer.id) found.")
+            return
+        }
+        
+        coreDataManager.context.delete(entity)
+        save()
+    }
+    
     func deleteTimer(indexSet: IndexSet) {
         indexSet.map { timerEntities[$0] }.forEach(coreDataManager.context.delete)
         
@@ -184,7 +223,7 @@ class TimerManager: ObservableObject {
     }
     
     // MARK: - Categories Handling
-    func createCategory(category: CategoryModel) {
+    func createCategory(_ category: CategoryModel) {
         let entity = CategoryEntity(context: coreDataManager.context)
         
         entity.id = category.id

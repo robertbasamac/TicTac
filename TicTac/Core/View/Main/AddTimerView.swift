@@ -14,11 +14,10 @@ struct AddTimerView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.editMode) private var editMode
     
-    @State private var title: String = ""
-    @State private var message: String = ""
-    @State private var category: CategoryModel? = nil
+    @State var timer: TimerModel
+    @Binding var editTimer: Bool
     
-    @State private var selections: [Int] = [0, 0, 0]
+    @State private var selections: [Int] = Array(repeating: 0, count: 3)
     
     private let data: [[String]] = [
         Array(0...23).map { "\($0)" },
@@ -28,56 +27,27 @@ struct AddTimerView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 0) {
                 PickerView(data: data, selections: $selections)
 
-                Form {
-                    HStack {
-                        Text("Title")
-                        
-                        TextField("Timer", text: $title)
-                            .multilineTextAlignment(.trailing)
-                    }
-
-                    HStack {
-                        Text("Alarm message")
-                        
-                        TextField("Message", text: $message)
-                            .multilineTextAlignment(.trailing)
-                    }
-                    
-                    NavigationLink {
-                        SelectCategoryView(category: $category)
-                    } label: {
-                        Text("Category")
-                            .badge(category == nil ? "None" : category!.title)
-                    }
-                }
+                timerInfoSection
             }
-            .navigationTitle("Add Timer")
+            .navigationTitle(editTimer ? "Edit Timer" : "Add Timer")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Cancel")
-                    }
+                    dismissButton
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        tm.createTimer(timer: TimerModel(title: title == "" ? "Timer" : title, message: message, duration: getPickerDurationAsSeconds(), category: category))
-                        dismiss()
-                    } label: {
-                        Text("Save")
-                    }
+                    saveButton
                     .disabled(getPickerDurationAsSeconds() == 0)
                 }
             }
         }
         .onAppear {
             tm.isActive = false
+            selections = getTimerAsHMS(ofTimer: self.timer)
             editMode?.wrappedValue = .inactive
         }
         .onWillDisappear {
@@ -88,12 +58,74 @@ struct AddTimerView: View {
 
 struct AddTimerView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTimerView()
+        AddTimerView(timer: dev.timer, editTimer: .constant(false))
             .environmentObject(dev.tm)
     }
 }
 
 extension AddTimerView {
+    
+    private var timerInfoSection: some View {
+        Form {
+            HStack {
+                Text("Title")
+                
+                TextField("Timer", text: $timer.title)
+                    .multilineTextAlignment(.trailing)
+            }
+
+            HStack {
+                Text("Alarm message")
+                
+                TextField("Message", text: $timer.alarmMessage)
+                    .multilineTextAlignment(.trailing)
+            }
+            
+            NavigationLink {
+                SelectCategoryView(category: $timer.category)
+            } label: {
+                Text("Category")
+                    .badge(timer.category == nil ? "None" : timer.category!.title)
+            }
+            
+            if editTimer {
+                Section {
+                    Button(role: .destructive) {
+                        tm.deleteTimer(timer)
+                        dismiss()
+                    } label: {
+                        Text("Delete Timer")
+                            .frame(maxWidth: .infinity)
+                    }
+
+                }
+            }
+        }
+    }
+    
+    private var saveButton: some View {
+        Button {
+            if editTimer {
+                timer.duration = getPickerDurationAsSeconds()
+                tm.editTimer(timer)
+            } else {
+                timer.duration = getPickerDurationAsSeconds()
+                tm.createTimer(timer)
+            }
+            
+            dismiss()
+        } label: {
+            Text("Save")
+        }
+    }
+    
+    private var dismissButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Text("Cancel")
+        }
+    }
     
     private func getPickerDurationAsSeconds() -> Double {
         var duration: Double = 0
@@ -103,5 +135,17 @@ extension AddTimerView {
         duration += Double(selections[2])
         
         return duration
+    }
+    
+    private func getTimerAsHMS(ofTimer timer: TimerModel) -> [Int] {
+        var time: [Int] = Array(repeating: 0, count: 3)
+        
+        let duration: Int = Int(timer.duration)
+        
+        time[0] = duration / 3600
+        time[1] = (duration % 3600) / 60
+        time[2] = (duration % 3600) % 60
+        
+        return time
     }
 }

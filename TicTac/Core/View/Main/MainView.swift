@@ -11,7 +11,9 @@ struct MainView: View {
     @EnvironmentObject private var tm: TimerManager
     
     @State private var editMode = EditMode.inactive
-    @State private var showAddtimer: Bool = false
+    
+    @State private var timer: TimerModel? = nil
+    @State private var editTimer: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -19,6 +21,10 @@ struct MainView: View {
                 ForEach(tm.timers) { timer in
                     TimerRowView(timer: timer)
                         .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
+                        .onTapGesture {
+                            self.editTimer = true
+                            self.timer = timer
+                        }
                 }
                 .onDelete(perform: tm.deleteTimer)
                 .onMove(perform: tm.moveTimer)
@@ -40,8 +46,8 @@ struct MainView: View {
                     editMode = .inactive
                 }
             }
-            .sheet(isPresented: $showAddtimer) {
-                AddTimerView()
+            .sheet(item: $timer) { timer in
+                AddTimerView(timer: timer, editTimer: $editTimer)
                     .environmentObject(tm)
                     .environment(\.editMode, $editMode)
             }
@@ -70,7 +76,8 @@ struct MainView: View {
     
     private var addButton: some View {
         Button {
-            showAddtimer.toggle()
+            self.editTimer = false
+            self.timer = TimerModel()
         } label: {
             Image(systemName: "plus")
         }

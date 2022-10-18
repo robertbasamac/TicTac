@@ -35,19 +35,26 @@ struct CreateCategoryView: View {
         .navigationTitle("Create New Category")
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button {
-                    tm.createCategory(category: CategoryModel(title: title, color: color))
-                    dismiss()
-                } label: {
-                    Text("Save")
-                }
-                .disabled(isSaveButtonDisabled())
+                saveButton
             }
         }
     }
     
     private func isSaveButtonDisabled() -> Bool {
         return title.isEmpty
+    }
+}
+
+extension CreateCategoryView {
+    
+    private var saveButton: some View {
+        Button {
+            tm.createCategory(CategoryModel(title: title, color: color))
+            dismiss()
+        } label: {
+            Text("Save")
+        }
+        .disabled(isSaveButtonDisabled())
     }
 }
 

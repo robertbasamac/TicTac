@@ -31,7 +31,7 @@ struct TimerModel: Identifiable {
     var remainingPercentage: Double = 1
     var displayedTime: String = 0.asHoursMinutesSeconds
     
-    init(title: String = "Timer", message: String = "", duration: Double = 0, category: CategoryModel? = nil) {
+    init(title: String = "", message: String = "", duration: Double = 0, category: CategoryModel? = nil) {
         self.duration = duration
         self.title = title
         self.alarmMessage = message
