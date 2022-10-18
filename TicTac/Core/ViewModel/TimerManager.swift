@@ -38,54 +38,23 @@ class TimerManager: ObservableObject {
     
     // MARK: - Timers Handling
     func createTimer(_ timer: TimerModel) {
-        let entity = TimerEntity(context: coreDataManager.context)
+        var entity = TimerEntity(context: coreDataManager.context)
         
-        entity.id = timer.id
+        updateTimerEntityFromModel(entity: &entity, model: timer)
         entity.order = (timerEntities.last?.order ?? 0) + 1
-        entity.title = timer.title == "" ? "Timer" : timer.title
-        entity.duration = timer.duration
-        entity.isRunning = timer.isRunning
-        entity.isPaused = timer.isPaused
         
-        if let category = timer.category {
-            let categoryEntities: [CategoryEntity] = fetchCategoryEntities(forId: category.id)
-            
-            guard !categoryEntities.isEmpty, let categoryEntity = categoryEntities.first else {
-                print("No Category with id = \(timer.id) found.")
-                return
-            }
-            
-            entity.category = categoryEntity
-        }
-                
         startTimer(timer)
     }
     
     func editTimer(_ timer: TimerModel) {
         let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
         
-        guard !entities.isEmpty, let entity = entities.first else {
+        guard !entities.isEmpty, var entity = entities.first else {
             print("No Timer with id = \(timer.id) found.")
             return
         }
         
-        entity.id = timer.id
-        entity.order = (timerEntities.last?.order ?? 0) + 1
-        entity.title = timer.title
-        entity.duration = timer.duration
-        entity.isRunning = timer.isRunning
-        entity.isPaused = timer.isPaused
-        
-        if let category = timer.category {
-            let categoryEntities: [CategoryEntity] = fetchCategoryEntities(forId: category.id)
-            
-            guard !categoryEntities.isEmpty, let categoryEntity = categoryEntities.first else {
-                print("No Category with id = \(timer.id) found.")
-                return
-            }
-            
-            entity.category = categoryEntity
-        }
+        updateTimerEntityFromModel(entity: &entity, model: timer)
         
         startTimer(timer)
     }
@@ -356,6 +325,27 @@ class TimerManager: ObservableObject {
                     stopTimer(timers[index])
                 }
             }
+        }
+    }
+    
+    private func updateTimerEntityFromModel(entity: inout TimerEntity, model: TimerModel) {
+        entity.id = model.id
+        entity.title = model.title
+        entity.duration = model.duration
+        entity.isRunning = model.isRunning
+        entity.isPaused = model.isPaused
+        
+        if let category = model.category {
+            let categoryEntities: [CategoryEntity] = fetchCategoryEntities(forId: category.id)
+            
+            guard !categoryEntities.isEmpty, let categoryEntity = categoryEntities.first else {
+                print("No Category with id = \(model.id) found.")
+                return
+            }
+            
+            entity.category = categoryEntity
+        } else {
+            entity.category = nil
         }
     }
     
