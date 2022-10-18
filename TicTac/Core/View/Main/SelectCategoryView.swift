@@ -38,7 +38,7 @@ struct SelectCategoryView: View {
                             self.category = category
                         }
                 }
-                .onDelete(perform: tm.deleteCategory)
+                .onDelete(perform: deleteCategory)
             } header: {
                 if !tm.categories.isEmpty {
                     Text("Categories")
@@ -69,6 +69,16 @@ struct SelectCategoryView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color(uiColor: .secondarySystemGroupedBackground))
+    }
+    
+    private func deleteCategory(indexSet: IndexSet) {
+        let index = indexSet.first!
+        
+        if tm.categories[index] == category {
+            category = nil
+        }
+        
+        tm.deleteCategory(indexSet: indexSet)
     }
 }
 
