@@ -316,12 +316,7 @@ class TimerManager: ObservableObject {
             if timers[index].isRunning && !timers[index].isPaused {
                 timers[index].elapsedTime = Date().timeIntervalSince(timers[index].startTime ?? Date())
                 
-                //                timers[index].remainingPercentage = 1 - timers[index].elapsedTime / timers[index].duration
-                
-                if timers[index].elapsedTime < timers[index].duration {
-                    //                    let remainingTime = timers[index].duration - timers[index].elapsedTime
-                    //                    timers[index].displayedTime = remainingTime.asHoursMinutesSeconds
-                } else {
+                if timers[index].elapsedTime >= timers[index].duration {
                     stopTimer(timers[index])
                 }
             }
@@ -330,7 +325,7 @@ class TimerManager: ObservableObject {
     
     private func updateTimerEntityFromModel(entity: inout TimerEntity, model: TimerModel) {
         entity.id = model.id
-        entity.title = model.title
+        entity.title = model.title == "" ? "Timer" : model.title
         entity.duration = model.duration
         entity.isRunning = model.isRunning
         entity.isPaused = model.isPaused
