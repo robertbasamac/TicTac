@@ -59,13 +59,13 @@ struct AddTimerView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     saveButton
-                    .disabled(getPickerDurationAsSeconds() == 0)
+                        .disabled(getPickerDurationInSeconds() == 0)
                 }
             }
         }
         .onAppear {
             tm.isActive = false
-            selections = getTimerAsHMS(ofTimer: self.timer)
+            selections = getTimerDurationAsArrayHMS(ofTimer: self.timer)
             editMode?.wrappedValue = .inactive
         }
         .onWillDisappear {
@@ -124,10 +124,10 @@ extension AddTimerView {
     private var saveButton: some View {
         Button {
             if editTimer {
-                timer.duration = getPickerDurationAsSeconds()
+                timer.duration = getPickerDurationInSeconds()
                 tm.editTimer(timer)
             } else {
-                timer.duration = getPickerDurationAsSeconds()
+                timer.duration = getPickerDurationInSeconds()
                 tm.createTimer(timer)
             }
             
@@ -145,7 +145,7 @@ extension AddTimerView {
         }
     }
     
-    private func getPickerDurationAsSeconds() -> Double {
+    private func getPickerDurationInSeconds() -> Double {
         var duration: Double = 0
         
         duration += Double(selections[0] * 3600)
@@ -155,7 +155,7 @@ extension AddTimerView {
         return duration
     }
     
-    private func getTimerAsHMS(ofTimer timer: TimerModel) -> [Int] {
+    private func getTimerDurationAsArrayHMS(ofTimer timer: TimerModel) -> [Int] {
         var time: [Int] = Array(repeating: 0, count: 3)
         
         let duration: Int = Int(timer.duration)

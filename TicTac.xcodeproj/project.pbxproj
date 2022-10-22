@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		093C0B8228F8096C001B6FD0 /* CategoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8128F8096C001B6FD0 /* CategoryRowView.swift */; };
 		093C0B8528F81248001B6FD0 /* CoreDataContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8328F81248001B6FD0 /* CoreDataContainer.xcdatamodeld */; };
 		093C0B8A28F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8628F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift */; };
 		093C0B8B28F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093C0B8728F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift */; };
@@ -37,7 +36,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		093C0B8128F8096C001B6FD0 /* CategoryRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryRowView.swift; sourceTree = "<group>"; };
 		093C0B8428F81248001B6FD0 /* CoreDataContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataContainer.xcdatamodel; sourceTree = "<group>"; };
 		093C0B8628F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		093C0B8728F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -202,7 +200,6 @@
 				09B1404C28EA2CEA00FDBE2B /* TimerRowView.swift */,
 				0979DA8628ECAC7400478186 /* AddTimerView.swift */,
 				09A3F2AA28F72F0C00E41DBF /* SelectCategoryView.swift */,
-				093C0B8128F8096C001B6FD0 /* CategoryRowView.swift */,
 				09A3F2B028F7564200E41DBF /* CreateCategoryView.swift */,
 			);
 			path = Main;
@@ -299,7 +296,6 @@
 				09B4F2BA28E4434E00451810 /* TimerManager.swift in Sources */,
 				093C0B8C28F83DFF001B6FD0 /* TimerEntity+CoreDataClass.swift in Sources */,
 				09614C7028EB55F50069EE8C /* CircleButtonView.swift in Sources */,
-				093C0B8228F8096C001B6FD0 /* CategoryRowView.swift in Sources */,
 				093C0B8B28F83DFF001B6FD0 /* CategoryEntity+CoreDataProperties.swift in Sources */,
 				093C0B8A28F83DFF001B6FD0 /* CategoryEntity+CoreDataClass.swift in Sources */,
 				09B1404928EA2A1000FDBE2B /* PreviewProvider.swift in Sources */,
