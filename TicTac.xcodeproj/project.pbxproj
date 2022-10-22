@@ -17,7 +17,6 @@
 		09614C7028EB55F50069EE8C /* CircleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09614C6F28EB55F50069EE8C /* CircleButtonView.swift */; };
 		09614C7228EB787D0069EE8C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09614C7128EB787D0069EE8C /* Color.swift */; };
 		0979DA8728ECAC7400478186 /* AddTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0979DA8628ECAC7400478186 /* AddTimerView.swift */; };
-		099C48BE28F5CE7700358AE1 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099C48BD28F5CE7700358AE1 /* PickerView.swift */; };
 		09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A339CB28E1C43B00FE7896 /* TicTacApp.swift */; };
 		09A339D028E1C43C00FE7896 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A339CF28E1C43C00FE7896 /* Assets.xcassets */; };
 		09A339D328E1C43C00FE7896 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09A339D228E1C43C00FE7896 /* Preview Assets.xcassets */; };
@@ -29,6 +28,7 @@
 		09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6303E28E3754E006E9F31 /* TimeInterval.swift */; };
 		09A6304228E38BB5006E9F31 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A6304128E38BB5006E9F31 /* Date.swift */; };
 		09A725EA28F1D7590037F9EA /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A725E928F1D7590037F9EA /* NotificationManager.swift */; };
+		09A8DECD2903233100DC27BC /* PickerViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A8DECC2903233100DC27BC /* PickerViewRepresentable.swift */; };
 		09B1404928EA2A1000FDBE2B /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B1404828EA2A1000FDBE2B /* PreviewProvider.swift */; };
 		09B1404D28EA2CEA00FDBE2B /* TimerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B1404C28EA2CEA00FDBE2B /* TimerRowView.swift */; };
 		09B4F2B728E4420100451810 /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B4F2B628E4420100451810 /* TimerModel.swift */; };
@@ -47,7 +47,6 @@
 		09614C6F28EB55F50069EE8C /* CircleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButtonView.swift; sourceTree = "<group>"; };
 		09614C7128EB787D0069EE8C /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		0979DA8628ECAC7400478186 /* AddTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTimerView.swift; sourceTree = "<group>"; };
-		099C48BD28F5CE7700358AE1 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		09A339C828E1C43B00FE7896 /* TicTac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09A339CB28E1C43B00FE7896 /* TicTacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacApp.swift; sourceTree = "<group>"; };
 		09A339CF28E1C43C00FE7896 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -60,6 +59,7 @@
 		09A6303E28E3754E006E9F31 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		09A6304128E38BB5006E9F31 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		09A725E928F1D7590037F9EA /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		09A8DECC2903233100DC27BC /* PickerViewRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewRepresentable.swift; sourceTree = "<group>"; };
 		09B1404828EA2A1000FDBE2B /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		09B1404C28EA2CEA00FDBE2B /* TimerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerRowView.swift; sourceTree = "<group>"; };
 		09B4F2B628E4420100451810 /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				09614C6F28EB55F50069EE8C /* CircleButtonView.swift */,
-				099C48BD28F5CE7700358AE1 /* PickerView.swift */,
+				09A8DECC2903233100DC27BC /* PickerViewRepresentable.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -288,7 +288,6 @@
 			files = (
 				09C10C6D28EED4E500B9B79C /* View.swift in Sources */,
 				09A6304228E38BB5006E9F31 /* Date.swift in Sources */,
-				099C48BE28F5CE7700358AE1 /* PickerView.swift in Sources */,
 				09A6303F28E3754E006E9F31 /* TimeInterval.swift in Sources */,
 				09614C7228EB787D0069EE8C /* Color.swift in Sources */,
 				09A44EE728F98D290061026D /* UIColorTransformer.swift in Sources */,
@@ -310,6 +309,7 @@
 				0979DA8728ECAC7400478186 /* AddTimerView.swift in Sources */,
 				09A3F2A928F6DA8400E41DBF /* CategoryModel.swift in Sources */,
 				093C0B8D28F83DFF001B6FD0 /* TimerEntity+CoreDataProperties.swift in Sources */,
+				09A8DECD2903233100DC27BC /* PickerViewRepresentable.swift in Sources */,
 				09A339CC28E1C43B00FE7896 /* TicTacApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

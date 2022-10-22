@@ -44,7 +44,7 @@ struct PickerViewRepresentable: UIViewRepresentable {
         func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
             return self.parent.data[component].count
         }
-
+        
         func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
             return self.parent.data[component][row]
         }

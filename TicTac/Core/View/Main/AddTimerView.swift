@@ -28,7 +28,25 @@ struct AddTimerView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                PickerView(data: data, selections: $selections)
+                ZStack {
+                    PickerViewRepresentable(data: data, selections: $selections)
+                        .frame(maxWidth: .infinity)
+                    
+                    Text(selections[0] > 1 ? "hours" : "hour")
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .frame(width: 50, alignment: .leading)
+                        .offset(x: -62)
+                    
+                    Text("min")
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .frame(width: 35, alignment: .leading)
+                        .offset(x: 34)
+                    
+                    Text("sec")
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .frame(width: 30, alignment: .leading)
+                        .offset(x: 132)
+                }
 
                 timerInfoSection
             }
