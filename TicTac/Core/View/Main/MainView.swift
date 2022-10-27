@@ -29,6 +29,8 @@ struct MainView: View {
                 .onDelete(perform: tm.deleteTimer)
                 .onMove(perform: tm.moveTimer)
             }
+            .listStyle(.plain)
+            .navigationTitle("Timers")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     editButton
@@ -38,22 +40,21 @@ struct MainView: View {
                     addButton
                 }
             }
-            .listStyle(.plain)
-            .navigationTitle("Timers")
             .environment(\.editMode, $editMode)
-            .onChange(of: tm.timers.count) { newValue in
-                if editMode == .active && newValue == 0 {
-                    editMode = .inactive
-                }
-            }
-            .sheet(item: $timer) { timer in
-                AddTimerView(timer: timer, editTimer: $editTimer)
-                    .environmentObject(tm)
-                    .environment(\.editMode, $editMode)
-            }
+            .searchable(text: $tm.searchText, placement: .automatic, prompt: "Search")
         }
         .onAppear {
             NotificationManager.instance.requestAuthorization()
+        }
+        .onChange(of: tm.timers.count) { newValue in
+            if editMode == .active && newValue == 0 {
+                editMode = .inactive
+            }
+        }
+        .sheet(item: $timer) { timer in
+            AddTimerView(timer: timer, editTimer: $editTimer)
+                .environmentObject(tm)
+                .environment(\.editMode, $editMode)
         }
     }
     

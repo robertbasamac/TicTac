@@ -19,6 +19,8 @@ class TimerManager: ObservableObject {
     
     @Published var timers: [TimerModel] = []
     @Published var categories: [CategoryModel] = []
+    
+    @Published var searchText: String = ""
 
     @Published var isActive: Bool = true
     
@@ -213,7 +215,8 @@ class TimerManager: ObservableObject {
     
     private func addSubscribers() {
         $timerEntities
-            .map(mapTimerEntitiesToTimerModels)
+            .combineLatest($searchText)
+            .map(mapAndFilterTimerEntitiesToTimerModels)
             .sink { [weak self] returnedTimers in
                 guard let self = self else { return }
                 
@@ -232,7 +235,7 @@ class TimerManager: ObservableObject {
     }
     
     // MARK: - Map Core Data Entities to Models
-    private func mapTimerEntitiesToTimerModels(timerEntities: [TimerEntity]) -> [TimerModel] {
+    private func mapAndFilterTimerEntitiesToTimerModels(timerEntities: [TimerEntity], text: String) -> [TimerModel] {
         var timers: [TimerModel] = []
         
         for timerEntity in timerEntities {
@@ -260,6 +263,8 @@ class TimerManager: ObservableObject {
             timers.append(timerModel)
         }
         
+        timers = filterTimers(timerModels: timers, text: text)
+        
         return timers
     }
     
@@ -278,6 +283,25 @@ class TimerManager: ObservableObject {
         }
         
         return categories
+    }
+    
+    private func filterTimers(timerModels: [TimerModel], text: String) -> [TimerModel] {
+        guard !text.isEmpty else {
+            return timerModels
+        }
+        
+        let lowercasedText = text.lowercased()
+         
+        return timerModels.filter { (timer) -> Bool in
+            if let category = timer.category {
+                return (timer.title.lowercased().contains(lowercasedText) ||
+                        timer.alarmMessage.lowercased().contains(lowercasedText) ||
+                        category.title.lowercased().contains(lowercasedText))
+            } else {
+                return (timer.title.lowercased().contains(lowercasedText) ||
+                        timer.alarmMessage.lowercased().contains(lowercasedText))
+            }
+        }
     }
     
     // MARK: Clock Handling
