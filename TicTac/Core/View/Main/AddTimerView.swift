@@ -123,13 +123,8 @@ extension AddTimerView {
     
     private var saveButton: some View {
         Button {
-            if editTimer {
-                timer.duration = getPickerDurationInSeconds()
-                tm.editTimer(timer)
-            } else {
-                timer.duration = getPickerDurationInSeconds()
-                tm.createTimer(timer)
-            }
+            timer.duration = getPickerDurationInSeconds()
+            tm.updateTimer(timer)
             
             dismiss()
         } label: {

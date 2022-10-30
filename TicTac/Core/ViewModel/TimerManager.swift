@@ -12,51 +12,28 @@ import CoreData
 
 class TimerManager: ObservableObject {
     
-    let coreDataManager = CoreDataManager.shared
-    
-    @Published var timerEntities: [TimerEntity] = []
-    @Published var categoryEntities: [CategoryEntity] = []
-    
     @Published var timers: [TimerModel] = []
     @Published var categories: [CategoryModel] = []
     
     @Published var searchText: String = ""
-
     @Published var isActive: Bool = true
     
     @Published private var clock: AnyCancellable?
     
+    private let coreDataManager: CoreDataManager = CoreDataManager()
     private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
 
     // MARK: - Init
     init() {
         addSubscribers()
-        getTimers()
-        getCategories()
         
         startClock()
         stopClock()
     }
     
     // MARK: - Timers Handling
-    func createTimer(_ timer: TimerModel) {
-        var entity = TimerEntity(context: coreDataManager.context)
-        
-        updateTimerEntityFromModel(entity: &entity, model: timer)
-        entity.order = (timerEntities.last?.order ?? 0) + 1
-        
-        startTimer(timer)
-    }
-    
-    func editTimer(_ timer: TimerModel) {
-        let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
-        
-        guard !entities.isEmpty, var entity = entities.first else {
-            print("No Timer with id = \(timer.id) found.")
-            return
-        }
-        
-        updateTimerEntityFromModel(entity: &entity, model: timer)
+    func updateTimer(_ timer: TimerModel) {
+        coreDataManager.updateTimer(timer: timer)
         
         startTimer(timer)
     }
@@ -64,38 +41,27 @@ class TimerManager: ObservableObject {
     func startTimer(_ timer: TimerModel) {
         startClock()
         
-        let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
-        
-        guard !entities.isEmpty, let entity = entities.first else {
-            print("No Timer with id = \(timer.id) found.")
-            return
-        }
-        
-        entity.startTime = Date()
-        entity.alarmTime = Date(timeInterval: entity.duration, since: entity.startTime ?? Date())
-        entity.isRunning = true
+        var editableTimer = timer
+
+        editableTimer.startTime = Date()
+        editableTimer.alarmTime = Date(timeInterval: editableTimer.duration, since: editableTimer.startTime ?? Date())
+        editableTimer.isRunning = true
         
         NotificationManager.instance.scheduleNotification(
-                        title: entity.title,
-                        message: entity.message,
-                        alarmTime: entity.alarmTime ?? Date())
+                        title: editableTimer.title,
+                        message: editableTimer.alarmMessage,
+                        alarmTime: editableTimer.alarmTime ?? Date())
         
-        save()
+        coreDataManager.updateTimer(timer: editableTimer)
     }
     
     func pauseTimer(_ timer: TimerModel) {
-        let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
-        
-        guard !entities.isEmpty, let entity = entities.first else {
-            print("No Timer with id = \(timer.id) found.")
-            return
-        }
-        
-        entity.isPaused = true
-        entity.pauseTime = Date()
-        entity.elapsedTime = timer.elapsedTime
+        var editableTimer = timer
 
-        save()
+        editableTimer.isPaused = true
+        editableTimer.pauseTime = Date()
+        
+        coreDataManager.updateTimer(timer: editableTimer)
         
         stopClock()
     }
@@ -103,118 +69,90 @@ class TimerManager: ObservableObject {
     func resumeTimer(_ timer: TimerModel) {
         startClock()
         
-        let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
+        var editableTimer = timer
         
-        guard !entities.isEmpty, let entity = entities.first else {
-            print("No Timer with id = \(timer.id) found.")
-            return
-        }
-        
-        let elapsedTimeWhilePaused = Date().timeIntervalSince(entity.pauseTime ?? Date())
+        let elapsedTimeWhilePaused = Date().timeIntervalSince(timer.pauseTime ?? Date())
 
-        entity.startTime = Date(timeInterval: elapsedTimeWhilePaused, since: entity.startTime ?? Date())
-        entity.alarmTime = Date(timeInterval: entity.duration, since: entity.startTime ?? Date())
-        entity.isPaused = false
+        editableTimer.startTime = Date(timeInterval: elapsedTimeWhilePaused, since: editableTimer.startTime ?? Date())
+        editableTimer.alarmTime = Date(timeInterval: editableTimer.duration, since: editableTimer.startTime ?? Date())
+        editableTimer.isPaused = false
         
-        save()
+        coreDataManager.updateTimer(timer: editableTimer)
     }
     
     func stopTimer(_ timer: TimerModel) {
-        let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
+        var editableTimer = timer
+
         
-        guard !entities.isEmpty, let entity = entities.first else {
-            print("No Timer with id = \(timer.id) found.")
-            return
-        }
+        editableTimer.startTime = nil
+        editableTimer.alarmTime = nil
+        editableTimer.pauseTime = nil
+        editableTimer.isRunning = false
+        editableTimer.isPaused = false
+        editableTimer.elapsedTime = 0
         
-        entity.startTime = nil
-        entity.alarmTime = nil
-        entity.pauseTime = nil
-        entity.isRunning = false
-        entity.isPaused = false
-        entity.elapsedTime = 0
-        
-        save()
+        coreDataManager.updateTimer(timer: editableTimer)
         
         stopClock()
     }
     
     func deleteTimer(_ timer: TimerModel) {
-        let entities: [TimerEntity] = fetchTimerEntities(forId: timer.id)
+        coreDataManager.deleteTimer(timer: timer)
         
-        guard !entities.isEmpty, let entity = entities.first else {
-            print("No Timer with id = \(timer.id) found.")
-            return
-        }
-        
-        coreDataManager.context.delete(entity)
-        save()
+        stopClock()
     }
     
     func deleteTimer(indexSet: IndexSet) {
-        indexSet.map { timerEntities[$0] }.forEach(coreDataManager.context.delete)
+        indexSet.map { timers[$0] }.forEach(coreDataManager.deleteTimer)
         
-        save()
-                
         stopClock()
     }
     
     func moveTimer(fromOffsets: IndexSet, toOffset: Int) {
         let itemToMove = fromOffsets.first!
-        
+                
         if itemToMove < toOffset {
             var startIndex = itemToMove + 1
             let endIndex = toOffset - 1
-            var startOrder = timerEntities[itemToMove].order
+            var startOrder = timers[itemToMove].order
             
             while startIndex <= endIndex {
-                timerEntities[startIndex].order = startOrder
+                timers[startIndex].order = startOrder
                 
                 startOrder += 1
                 startIndex += 1
             }
-            
-            timerEntities[itemToMove].order = startOrder
+            timers[itemToMove].order = startOrder
         } else if toOffset < itemToMove {
             var startIndex = toOffset
             let endIndex = itemToMove - 1
-            var startOrder = timerEntities[toOffset].order + 1
-            let newOrder = timerEntities[toOffset].order
+            var startOrder = timers[toOffset].order + 1
+            let newOrder = timers[toOffset].order
             
             while startIndex <= endIndex {
-                timerEntities[startIndex].order = startOrder
+                timers[startIndex].order = startOrder
                 startOrder += 1
                 startIndex += 1
             }
-            
-            timerEntities[itemToMove].order = newOrder
+            timers[itemToMove].order = newOrder
         }
         
-        save()
+        coreDataManager.updateAllTimers(timers: timers)
     }
     
     // MARK: - Categories Handling
     func createCategory(_ category: CategoryModel) {
-        let entity = CategoryEntity(context: coreDataManager.context)
-        
-        entity.id = category.id
-        entity.title = category.title
-        entity.color = UIColor(category.color)
-        
-        save()
+        coreDataManager.updateCategory(category: category)
     }
     
     func deleteCategory(indexSet: IndexSet) {
-        indexSet.map { categoryEntities[$0] }.forEach(coreDataManager.context.delete)
-        
-        save()
+        indexSet.map { categories[$0] }.forEach(coreDataManager.deleteCategory)
     }
-
 
 // MARK: - Private
     
     private func addSubscribers() {
-        $timerEntities
+        coreDataManager.$timers
             .combineLatest($searchText)
             .map(mapAndFilterTimerEntitiesToTimerModels)
             .sink { [weak self] returnedTimers in
@@ -224,7 +162,7 @@ class TimerManager: ObservableObject {
             }
             .store(in: &cancellables)
         
-        $categoryEntities
+        coreDataManager.$categories
             .map(mapCategoryEntitiesToCategoryModels)
             .sink { [weak self] returnedCategories in
                 guard let self = self else { return }
@@ -242,6 +180,7 @@ class TimerManager: ObservableObject {
             var timerModel: TimerModel = TimerModel()
             
             timerModel.id = timerEntity.id
+            timerModel.order = timerEntity.order
             timerModel.title = timerEntity.title
             timerModel.alarmMessage = timerEntity.message
             timerModel.duration = timerEntity.duration
@@ -276,7 +215,6 @@ class TimerManager: ObservableObject {
             
             categoryModel.id = categoryEntity.id
             categoryModel.title = categoryEntity.title
-            
             categoryModel.color = Color(uiColor: categoryEntity.color)
             
             categories.append(categoryModel)
@@ -334,7 +272,7 @@ class TimerManager: ObservableObject {
         }
     }
     
-    // MARK: - Update Timer
+    // MARK: - Update Timer from Clock
     private func updateTimer(forIndex index: Int) {
         if isActive {
             if timers[index].isRunning && !timers[index].isPaused {
@@ -345,93 +283,5 @@ class TimerManager: ObservableObject {
                 }
             }
         }
-    }
-    
-    private func updateTimerEntityFromModel(entity: inout TimerEntity, model: TimerModel) {
-        entity.id = model.id
-        entity.title = model.title == "" ? "Timer" : model.title
-        entity.duration = model.duration
-        entity.isRunning = model.isRunning
-        entity.isPaused = model.isPaused
-        
-        if let category = model.category {
-            let categoryEntities: [CategoryEntity] = fetchCategoryEntities(forId: category.id)
-            
-            guard !categoryEntities.isEmpty, let categoryEntity = categoryEntities.first else {
-                print("No Category with id = \(model.id) found.")
-                return
-            }
-            
-            entity.category = categoryEntity
-        } else {
-            entity.category = nil
-        }
-    }
-    
-    // MARK: - Fetch Core Data Entities
-    private func getTimers() {
-        // one way to create the fetch request
-//        let request: NSFetchRequest<TimerEntity> = TimerEntity.fetchRequest()
-        
-        // the other way to create the fetch request
-        let request = NSFetchRequest<TimerEntity>(entityName: "TimerEntity")
-        
-        request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
-        
-        do {
-            timerEntities = try coreDataManager.context.fetch(request)
-        } catch let error {
-            print("Error fetching Timers, \(error.localizedDescription)")
-        }
-    }
-    
-    private func getCategories() {
-        let request = NSFetchRequest<CategoryEntity>(entityName: "CategoryEntity")
-        
-        do {
-            categoryEntities = try coreDataManager.context.fetch(request)
-        } catch let error {
-            print("Error fetching Categories, \(error.localizedDescription)")
-        }
-    }
-    
-    private func fetchTimerEntities(forId id: String) -> [TimerEntity] {
-        var entities: [TimerEntity] = []
-        
-        let request = NSFetchRequest<TimerEntity>(entityName: "TimerEntity")
-        
-        let filter = NSPredicate(format: "id == %@", id)
-        request.predicate = filter
-        
-        do {
-            entities = try coreDataManager.context.fetch(request)
-        } catch let error {
-            print("Error fetching Timer for id = \(id), \(error.localizedDescription)")
-        }
-        
-        return entities
-    }
-    
-    private func fetchCategoryEntities(forId id: String) -> [CategoryEntity] {
-        var entities: [CategoryEntity] = []
-        
-        let request = NSFetchRequest<CategoryEntity>(entityName: "CategoryEntity")
-        
-        let filter = NSPredicate(format: "id == %@", id)
-        request.predicate = filter
-        
-        do {
-            entities = try coreDataManager.context.fetch(request)
-        } catch let error {
-            print("Error fetching Category for id = \(id), \(error.localizedDescription)")
-        }
-        
-        return entities
-    }
-    
-    private func save() {
-        coreDataManager.save()
-        getTimers()
-        getCategories()
     }
 }
