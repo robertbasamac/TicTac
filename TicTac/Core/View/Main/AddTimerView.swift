@@ -64,12 +64,12 @@ struct AddTimerView: View {
             }
         }
         .onAppear {
-            tm.isActive = false
+            tm.allowUpdateTimers = false
             selections = getTimerDurationAsArrayHMS(ofTimer: self.timer)
             editMode?.wrappedValue = .inactive
         }
         .onWillDisappear {
-            tm.isActive = true
+            tm.allowUpdateTimers = true
         }
     }
 }

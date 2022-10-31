@@ -18,16 +18,13 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(tm.timers) { timer in
-                    TimerRowView(timer: timer)
-                        .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
-                        .onTapGesture {
-                            self.editTimer = true
-                            self.timer = timer
-                        }
+                if !tm.activeTimers.isEmpty {
+                    activeTimersSection
                 }
-                .onDelete(perform: tm.deleteTimer)
-                .onMove(perform: tm.moveTimer)
+                
+                if !tm.otherTimers.isEmpty {
+                    otherTimersSection
+                }
             }
             .listStyle(.plain)
             .navigationTitle("Timers")
@@ -46,7 +43,7 @@ struct MainView: View {
         .onAppear {
             NotificationManager.instance.requestAuthorization()
         }
-        .onChange(of: tm.timers.count) { newValue in
+        .onChange(of: tm.allTimers.count) { newValue in
             if editMode == .active && newValue == 0 {
                 editMode = .inactive
             }
@@ -57,12 +54,65 @@ struct MainView: View {
                 .environment(\.editMode, $editMode)
         }
     }
+}
+
+struct StopwatchView_Previews: PreviewProvider {
+    static var previews: some View {
+        MainView()
+            .environmentObject(dev.tm)
+            .preferredColorScheme(.dark)
+    }
+}
+
+extension MainView {
+    
+    private var activeTimersSection: some View {
+        Section {
+            ForEach(tm.activeTimers) { timer in
+                if timer.isRunning {
+                    TimerRowView(timer: timer)
+                        .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
+                        .onTapGesture {
+                            self.editTimer = true
+                            self.timer = timer
+                        }
+                }
+            }
+        } header: {
+            Text("Active timers")
+                .font(.headline)
+                .foregroundStyle(.primary)
+        }
+    }
+    
+    private var otherTimersSection: some View {
+        Section {
+            ForEach(tm.otherTimers) { timer in
+                if !timer.isRunning {
+                    TimerRowView(timer: timer)
+                        .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
+                        .onTapGesture {
+                            self.editTimer = true
+                            self.timer = timer
+                        }
+                }
+            }
+            .onDelete(perform: tm.deleteTimer)
+            .onMove(perform: tm.moveTimer)
+        } header: {
+            if !tm.activeTimers.isEmpty {
+                Text("Other timers")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+            }
+        }
+    }
     
     private var editButton: some View {
         return Group {
             switch editMode {
             case .inactive:
-                if tm.timers.count == 0 {
+                if tm.allTimers.count == 0 {
                     EmptyView()
                 } else {
                     EditButton()
@@ -82,13 +132,5 @@ struct MainView: View {
         } label: {
             Image(systemName: "plus")
         }
-    }
-}
-
-struct StopwatchView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-            .environmentObject(dev.tm)
-            .preferredColorScheme(.dark)
     }
 }

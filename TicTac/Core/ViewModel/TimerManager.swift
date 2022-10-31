@@ -12,11 +12,13 @@ import CoreData
 
 class TimerManager: ObservableObject {
     
-    @Published var timers: [TimerModel] = []
+    @Published var allTimers: [TimerModel] = []
+    @Published var activeTimers: [TimerModel] = []
+    @Published var otherTimers: [TimerModel] = []
     @Published var categories: [CategoryModel] = []
     
     @Published var searchText: String = ""
-    @Published var isActive: Bool = true
+    @Published var allowUpdateTimers: Bool = true
     
     @Published private var clock: AnyCancellable?
     
@@ -82,7 +84,6 @@ class TimerManager: ObservableObject {
     
     func stopTimer(_ timer: TimerModel) {
         var editableTimer = timer
-
         
         editableTimer.startTime = nil
         editableTimer.alarmTime = nil
@@ -103,41 +104,41 @@ class TimerManager: ObservableObject {
     }
     
     func deleteTimer(indexSet: IndexSet) {
-        indexSet.map { timers[$0] }.forEach(coreDataManager.deleteTimer)
-        
+        indexSet.map { allTimers[$0] }.forEach(coreDataManager.deleteTimer)
+
         stopClock()
     }
     
     func moveTimer(fromOffsets: IndexSet, toOffset: Int) {
         let itemToMove = fromOffsets.first!
-                
+
         if itemToMove < toOffset {
             var startIndex = itemToMove + 1
             let endIndex = toOffset - 1
-            var startOrder = timers[itemToMove].order
-            
+            var startOrder = allTimers[itemToMove].order
+
             while startIndex <= endIndex {
-                timers[startIndex].order = startOrder
-                
+                allTimers[startIndex].order = startOrder
+
                 startOrder += 1
                 startIndex += 1
             }
-            timers[itemToMove].order = startOrder
+            allTimers[itemToMove].order = startOrder
         } else if toOffset < itemToMove {
             var startIndex = toOffset
             let endIndex = itemToMove - 1
-            var startOrder = timers[toOffset].order + 1
-            let newOrder = timers[toOffset].order
-            
+            var startOrder = allTimers[toOffset].order + 1
+            let newOrder = allTimers[toOffset].order
+
             while startIndex <= endIndex {
-                timers[startIndex].order = startOrder
+                allTimers[startIndex].order = startOrder
                 startOrder += 1
                 startIndex += 1
             }
-            timers[itemToMove].order = newOrder
+            allTimers[itemToMove].order = newOrder
         }
-        
-        coreDataManager.updateAllTimers(timers: timers)
+
+        coreDataManager.updateAllTimers(timers: allTimers)
     }
     
     // MARK: - Categories Handling
@@ -153,12 +154,22 @@ class TimerManager: ObservableObject {
     
     private func addSubscribers() {
         coreDataManager.$timers
-            .combineLatest($searchText)
-            .map(mapAndFilterTimerEntitiesToTimerModels)
+            .map(mapTimerEntitiesToTimerModels)
             .sink { [weak self] returnedTimers in
                 guard let self = self else { return }
                 
-                self.timers = returnedTimers
+                self.allTimers = returnedTimers
+            }
+            .store(in: &cancellables)
+
+        $allTimers
+            .combineLatest($searchText)
+            .map(mapAndFilterTimers)
+            .sink { [weak self] (returnedActiveTimers, returnedOtherTimers) in
+                guard let self = self else { return }
+                
+                self.activeTimers = returnedActiveTimers
+                self.otherTimers = returnedOtherTimers
             }
             .store(in: &cancellables)
         
@@ -173,7 +184,7 @@ class TimerManager: ObservableObject {
     }
     
     // MARK: - Map Core Data Entities to Models
-    private func mapAndFilterTimerEntitiesToTimerModels(timerEntities: [TimerEntity], text: String) -> [TimerModel] {
+    private func mapTimerEntitiesToTimerModels(timerEntities: [TimerEntity]) -> [TimerModel] {
         var timers: [TimerModel] = []
         
         for timerEntity in timerEntities {
@@ -202,11 +213,26 @@ class TimerManager: ObservableObject {
             timers.append(timerModel)
         }
         
-        timers = filterTimers(timerModels: timers, text: text)
-        
         return timers
     }
     
+    private func mapAndFilterTimers(timers: [TimerModel], text: String) -> ([TimerModel], [TimerModel]) {
+        var activeTimers: [TimerModel] = []
+        var otherTimers: [TimerModel] = []
+        
+        for timer in timers {
+            if timer.isRunning {
+                activeTimers.append(timer)
+            } else {
+                otherTimers.append(timer)
+            }
+        }
+        
+        otherTimers = filterTimers(timerModels: otherTimers, text: text)
+        
+        return (activeTimers, otherTimers)
+    }
+        
     private func mapCategoryEntitiesToCategoryModels(categoryEntities: [CategoryEntity]) -> [CategoryModel] {
         var categories: [CategoryModel] = []
         
@@ -252,16 +278,14 @@ class TimerManager: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 
-                for index in self.timers.indices {
-                    self.updateTimer(forIndex: index)
-                }
+                self.updateTimers()
             }
     }
     
     private func stopClock() {
         let shouldStopClock: Bool = true
         
-        for timer in timers {
+        for timer in allTimers {
             if timer.isRunning && !timer.isPaused {
                 return
             }
@@ -273,13 +297,19 @@ class TimerManager: ObservableObject {
     }
     
     // MARK: - Update Timer from Clock
-    private func updateTimer(forIndex index: Int) {
-        if isActive {
-            if timers[index].isRunning && !timers[index].isPaused {
-                timers[index].elapsedTime = Date().timeIntervalSince(timers[index].startTime ?? Date())
-                
-                if timers[index].elapsedTime >= timers[index].duration {
-                    stopTimer(timers[index])
+    private func updateTimers() {
+        if allowUpdateTimers {
+            for timer in activeTimers {
+                if !timer.isPaused {
+                    if let index = activeTimers.firstIndex(where: { $0.id == timer.id }) {
+                        let elapsedTime = Date().timeIntervalSince(activeTimers[index].startTime ?? Date())
+                        
+                        if elapsedTime < activeTimers[index].duration {
+                            activeTimers[index].elapsedTime = elapsedTime
+                        } else {
+                            stopTimer(activeTimers[index])
+                        }
+                    }
                 }
             }
         }
