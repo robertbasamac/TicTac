@@ -17,7 +17,6 @@ extension TimerEntity {
     }
 
     @NSManaged public var id: String
-    @NSManaged public var order: Int
     @NSManaged public var title: String
     @NSManaged public var message: String
     @NSManaged public var startTime: Date?

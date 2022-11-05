@@ -12,7 +12,6 @@ struct AddTimerView: View {
     @EnvironmentObject private var tm: TimerManager
     
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.editMode) private var editMode
     
     @State var timer: TimerModel
     @Binding var editTimer: Bool
@@ -66,7 +65,6 @@ struct AddTimerView: View {
         .onAppear {
             tm.allowUpdateTimers = false
             selections = getTimerDurationAsArrayHMS(ofTimer: self.timer)
-            editMode?.wrappedValue = .inactive
         }
         .onWillDisappear {
             tm.allowUpdateTimers = true

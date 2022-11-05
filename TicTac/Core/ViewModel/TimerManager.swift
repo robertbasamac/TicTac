@@ -109,38 +109,6 @@ class TimerManager: ObservableObject {
         stopClock()
     }
     
-    func moveTimer(fromOffsets: IndexSet, toOffset: Int) {
-        let itemToMove = fromOffsets.first!
-
-        if itemToMove < toOffset {
-            var startIndex = itemToMove + 1
-            let endIndex = toOffset - 1
-            var startOrder = allTimers[itemToMove].order
-
-            while startIndex <= endIndex {
-                allTimers[startIndex].order = startOrder
-
-                startOrder += 1
-                startIndex += 1
-            }
-            allTimers[itemToMove].order = startOrder
-        } else if toOffset < itemToMove {
-            var startIndex = toOffset
-            let endIndex = itemToMove - 1
-            var startOrder = allTimers[toOffset].order + 1
-            let newOrder = allTimers[toOffset].order
-
-            while startIndex <= endIndex {
-                allTimers[startIndex].order = startOrder
-                startOrder += 1
-                startIndex += 1
-            }
-            allTimers[itemToMove].order = newOrder
-        }
-
-        coreDataManager.updateAllTimers(timers: allTimers)
-    }
-    
     // MARK: - Categories Handling
     func createCategory(_ category: CategoryModel) {
         coreDataManager.updateCategory(category: category)
@@ -191,7 +159,6 @@ class TimerManager: ObservableObject {
             var timerModel: TimerModel = TimerModel()
             
             timerModel.id = timerEntity.id
-            timerModel.order = timerEntity.order
             timerModel.title = timerEntity.title
             timerModel.alarmMessage = timerEntity.message
             timerModel.duration = timerEntity.duration

@@ -82,9 +82,7 @@ class CoreDataManager {
 
     private func getTimers() {
         let request = NSFetchRequest<TimerEntity>(entityName: "TimerEntity")
-        
-        request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
-        
+                
         do {
             timers = try container.viewContext.fetch(request)
         } catch let error {
@@ -106,7 +104,6 @@ class CoreDataManager {
         let entity = TimerEntity(context: container.viewContext)
         
         updateTimer(entity: entity, timer: timer)
-        entity.order = (timers.last?.order ?? 0) + 1
     }
     
     private func addCategory(category: CategoryModel) {
@@ -117,7 +114,6 @@ class CoreDataManager {
     
     private func updateTimer(entity: TimerEntity, timer: TimerModel) {
         entity.id = timer.id
-        entity.order = timer.order
         entity.title = timer.title == "" ? "Timer" : timer.title
         entity.duration = timer.duration
         entity.message = timer.alarmMessage

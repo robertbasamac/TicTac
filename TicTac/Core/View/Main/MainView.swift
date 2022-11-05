@@ -9,9 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject private var tm: TimerManager
-    
-    @State private var editMode = EditMode.inactive
-    
+        
     @State private var timer: TimerModel? = nil
     @State private var editTimer: Bool = false
     
@@ -30,28 +28,21 @@ struct MainView: View {
             .navigationTitle("Timers")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    editButton
+                    sortButton
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     addButton
                 }
             }
-            .environment(\.editMode, $editMode)
             .searchable(text: $tm.searchText, placement: .automatic, prompt: "Search")
         }
         .onAppear {
             NotificationManager.instance.requestAuthorization()
         }
-        .onChange(of: tm.allTimers.count) { newValue in
-            if editMode == .active && newValue == 0 {
-                editMode = .inactive
-            }
-        }
         .sheet(item: $timer) { timer in
             AddTimerView(timer: timer, editTimer: $editTimer)
                 .environmentObject(tm)
-                .environment(\.editMode, $editMode)
         }
     }
 }
@@ -98,7 +89,6 @@ extension MainView {
                 }
             }
             .onDelete(perform: tm.deleteTimer)
-            .onMove(perform: tm.moveTimer)
         } header: {
             if !tm.activeTimers.isEmpty {
                 Text("Other timers")
@@ -108,20 +98,11 @@ extension MainView {
         }
     }
     
-    private var editButton: some View {
-        return Group {
-            switch editMode {
-            case .inactive:
-                if tm.allTimers.count == 0 {
-                    EmptyView()
-                } else {
-                    EditButton()
-                }
-            case .active:
-                EditButton()
-            default:
-                EmptyView()
-            }
+    private var sortButton: some View {
+        Button {
+            
+        } label: {
+            Image(systemName: "arrow.up.arrow.down")
         }
     }
     

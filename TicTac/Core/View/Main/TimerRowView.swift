@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TimerRowView: View {
     @EnvironmentObject private var tm: TimerManager
-    @Environment(\.editMode) private var editMode
     
     let timer: TimerModel
     
@@ -70,24 +69,22 @@ extension TimerRowView {
     }
     
     @ViewBuilder private var buttonsSection: some View {
-        if editMode?.wrappedValue == .inactive {
-            VStack(spacing: 4) {
-                if timer.isRunning {
-                    CircleButtonView(style: .reset)
-                        .onTapGesture {
-                            tm.stopTimer(timer)
-                        }
-                }
-                
-                CircleButtonView(style: timer.isRunning != timer.isPaused ? .pause : .start)
+        VStack(spacing: 4) {
+            if timer.isRunning {
+                CircleButtonView(style: .reset)
                     .onTapGesture {
-                        timer.isRunning ?
-                        (timer.isPaused ?
-                         tm.resumeTimer(timer) :
-                            tm.pauseTimer(timer))
-                        : tm.startTimer(timer)
+                        tm.stopTimer(timer)
                     }
             }
+            
+            CircleButtonView(style: timer.isRunning != timer.isPaused ? .pause : .start)
+                .onTapGesture {
+                    timer.isRunning ?
+                    (timer.isPaused ?
+                     tm.resumeTimer(timer) :
+                        tm.pauseTimer(timer))
+                    : tm.startTimer(timer)
+                }
         }
     }
         

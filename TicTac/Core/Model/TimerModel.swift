@@ -10,7 +10,6 @@ import Combine
 
 struct TimerModel: Identifiable {
     var id: String = UUID().uuidString
-    var order: Int = 0
     var title: String
     var alarmMessage: String
     var duration: Double
