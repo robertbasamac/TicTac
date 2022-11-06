@@ -24,6 +24,7 @@ struct MainView: View {
                     otherTimersSection
                 }
             }
+            .animation(.none, value: tm.activeTimers.isEmpty || tm.otherTimers.isEmpty)
             .listStyle(.plain)
             .navigationTitle("Timers")
             .toolbar {
@@ -60,14 +61,15 @@ extension MainView {
     private var activeTimersSection: some View {
         Section {
             ForEach(tm.activeTimers) { timer in
-                if timer.isRunning {
-                    TimerRowView(timer: timer)
-                        .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
-                        .onTapGesture {
-                            self.editTimer = true
-                            self.timer = timer
-                        }
-                }
+                TimerRowView(timer: timer)
+                    .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
+                    .onTapGesture {
+                        self.editTimer = true
+                        self.timer = timer
+                    }
+            }
+            .onDelete { indexSet in
+                tm.deleteTimer(indexSet: indexSet, active: true)
             }
         } header: {
             Text("Active timers")
@@ -79,16 +81,16 @@ extension MainView {
     private var otherTimersSection: some View {
         Section {
             ForEach(tm.otherTimers) { timer in
-                if !timer.isRunning {
-                    TimerRowView(timer: timer)
-                        .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
-                        .onTapGesture {
-                            self.editTimer = true
-                            self.timer = timer
-                        }
-                }
+                TimerRowView(timer: timer)
+                    .listRowInsets(.init(top: 4, leading: 20, bottom: 4, trailing: 20))
+                    .onTapGesture {
+                        self.editTimer = true
+                        self.timer = timer
+                    }
             }
-            .onDelete(perform: tm.deleteTimer)
+            .onDelete { indexSet in
+                tm.deleteTimer(indexSet: indexSet, active: false)
+            }
         } header: {
             if !tm.activeTimers.isEmpty {
                 Text("Other timers")

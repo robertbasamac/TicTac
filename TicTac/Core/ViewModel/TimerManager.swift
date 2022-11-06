@@ -12,7 +12,7 @@ import CoreData
 
 class TimerManager: ObservableObject {
     
-    @Published var allTimers: [TimerModel] = []
+    //    @Published var allTimers: [TimerModel] = []
     @Published var activeTimers: [TimerModel] = []
     @Published var otherTimers: [TimerModel] = []
     @Published var categories: [CategoryModel] = []
@@ -20,11 +20,11 @@ class TimerManager: ObservableObject {
     @Published var searchText: String = ""
     @Published var allowUpdateTimers: Bool = true
     
-    @Published private var clock: AnyCancellable?
+    @Published private var clock: Cancellable?
     
     private let coreDataManager: CoreDataManager = CoreDataManager()
     private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
-
+    
     // MARK: - Init
     init() {
         addSubscribers()
@@ -36,63 +36,69 @@ class TimerManager: ObservableObject {
     // MARK: - Timers Handling
     func updateTimer(_ timer: TimerModel) {
         coreDataManager.updateTimer(timer: timer)
-        
-        startTimer(timer)
     }
     
     func startTimer(_ timer: TimerModel) {
+        print("\nSTART")
+        
         startClock()
         
-        var editableTimer = timer
-
-        editableTimer.startTime = Date()
-        editableTimer.alarmTime = Date(timeInterval: editableTimer.duration, since: editableTimer.startTime ?? Date())
-        editableTimer.isRunning = true
+        if let index = otherTimers.firstIndex(where: { $0.id == timer.id } ) {
+            otherTimers[index].startTime = Date()
+            otherTimers[index].alarmTime = Date(timeInterval: otherTimers[index].duration, since: otherTimers[index].startTime ?? Date())
+            otherTimers[index].isRunning = true
+            
+            NotificationManager.instance.scheduleNotification(
+                title: otherTimers[index].title,
+                message: otherTimers[index].alarmMessage,
+                alarmTime: otherTimers[index].alarmTime ?? Date())
+        }
         
-        NotificationManager.instance.scheduleNotification(
-                        title: editableTimer.title,
-                        message: editableTimer.alarmMessage,
-                        alarmTime: editableTimer.alarmTime ?? Date())
+        let timers = activeTimers + otherTimers
         
-        coreDataManager.updateTimer(timer: editableTimer)
+        coreDataManager.updateAllTimers(timers: timers)
     }
     
     func pauseTimer(_ timer: TimerModel) {
-        var editableTimer = timer
-
-        editableTimer.isPaused = true
-        editableTimer.pauseTime = Date()
+        print("\nPAUSE")
         
-        coreDataManager.updateTimer(timer: editableTimer)
+        if let index = activeTimers.firstIndex(where: { $0.id == timer.id } ) {
+            activeTimers[index].isPaused = true
+            activeTimers[index].pauseTime = Date()
+        }
+        
+        coreDataManager.updateAllTimers(timers: activeTimers)
         
         stopClock()
     }
     
     func resumeTimer(_ timer: TimerModel) {
-        startClock()
+        print("\nRESUME")
         
-        var editableTimer = timer
+        if let index = activeTimers.firstIndex(where: { $0.id == timer.id } ) {
+            let elapsedTimeWhilePaused = Date().timeIntervalSince(timer.pauseTime ?? Date())
+            
+            activeTimers[index].startTime = Date(timeInterval: elapsedTimeWhilePaused, since: activeTimers[index].startTime ?? Date())
+            activeTimers[index].alarmTime = Date(timeInterval: activeTimers[index].duration, since: activeTimers[index].startTime ?? Date())
+            activeTimers[index].isPaused = false
+        }
         
-        let elapsedTimeWhilePaused = Date().timeIntervalSince(timer.pauseTime ?? Date())
-
-        editableTimer.startTime = Date(timeInterval: elapsedTimeWhilePaused, since: editableTimer.startTime ?? Date())
-        editableTimer.alarmTime = Date(timeInterval: editableTimer.duration, since: editableTimer.startTime ?? Date())
-        editableTimer.isPaused = false
-        
-        coreDataManager.updateTimer(timer: editableTimer)
+        coreDataManager.updateAllTimers(timers: activeTimers)
     }
     
     func stopTimer(_ timer: TimerModel) {
-        var editableTimer = timer
+        print("\nSTOP")
         
-        editableTimer.startTime = nil
-        editableTimer.alarmTime = nil
-        editableTimer.pauseTime = nil
-        editableTimer.isRunning = false
-        editableTimer.isPaused = false
-        editableTimer.elapsedTime = 0
+        if let index = activeTimers.firstIndex(where: { $0.id == timer.id } ) {
+            activeTimers[index].startTime = nil
+            activeTimers[index].alarmTime = nil
+            activeTimers[index].pauseTime = nil
+            activeTimers[index].isRunning = false
+            activeTimers[index].isPaused = false
+            activeTimers[index].elapsedTime = 0
+        }
         
-        coreDataManager.updateTimer(timer: editableTimer)
+        coreDataManager.updateAllTimers(timers: activeTimers)
         
         stopClock()
     }
@@ -103,10 +109,12 @@ class TimerManager: ObservableObject {
         stopClock()
     }
     
-    func deleteTimer(indexSet: IndexSet) {
-        indexSet.map { allTimers[$0] }.forEach(coreDataManager.deleteTimer)
-
-        stopClock()
+    func deleteTimer(indexSet: IndexSet, active: Bool) {
+        if active {
+            indexSet.map { activeTimers[$0] }.forEach(coreDataManager.deleteTimer)
+        } else {
+            indexSet.map { otherTimers[$0] }.forEach(coreDataManager.deleteTimer)
+        }
     }
     
     // MARK: - Categories Handling
@@ -117,27 +125,29 @@ class TimerManager: ObservableObject {
     func deleteCategory(indexSet: IndexSet) {
         indexSet.map { categories[$0] }.forEach(coreDataManager.deleteCategory)
     }
-
-// MARK: - Private
+    
+    // MARK: - Private
     
     private func addSubscribers() {
-        coreDataManager.$timers
+        
+        coreDataManager.$activeTimers
             .map(mapTimerEntitiesToTimerModels)
             .sink { [weak self] returnedTimers in
                 guard let self = self else { return }
                 
-                self.allTimers = returnedTimers
+                self.activeTimers = returnedTimers
+                print("Publisher activeTimers")
             }
             .store(in: &cancellables)
-
-        $allTimers
+        
+        coreDataManager.$otherTimers
             .combineLatest($searchText)
-            .map(mapAndFilterTimers)
-            .sink { [weak self] (returnedActiveTimers, returnedOtherTimers) in
+            .map(mapTimerEntitiesToTimerModelsAndFilter)
+            .sink { [weak self] returnedTimers in
                 guard let self = self else { return }
                 
-                self.activeTimers = returnedActiveTimers
-                self.otherTimers = returnedOtherTimers
+                self.otherTimers = returnedTimers
+                print("Publisher otherTimers")
             }
             .store(in: &cancellables)
         
@@ -153,6 +163,7 @@ class TimerManager: ObservableObject {
     
     // MARK: - Map Core Data Entities to Models
     private func mapTimerEntitiesToTimerModels(timerEntities: [TimerEntity]) -> [TimerModel] {
+        print("mapTimerEntitiesToTimerModels called")
         var timers: [TimerModel] = []
         
         for timerEntity in timerEntities {
@@ -183,23 +194,15 @@ class TimerManager: ObservableObject {
         return timers
     }
     
-    private func mapAndFilterTimers(timers: [TimerModel], text: String) -> ([TimerModel], [TimerModel]) {
-        var activeTimers: [TimerModel] = []
-        var otherTimers: [TimerModel] = []
+    private func mapTimerEntitiesToTimerModelsAndFilter(timerEntities: [TimerEntity], text: String) -> [TimerModel] {
+        print("mapTimerEntitiesToTimerModelsAndFilter called")
+        var timers: [TimerModel] = mapTimerEntitiesToTimerModels(timerEntities: timerEntities)
         
-        for timer in timers {
-            if timer.isRunning {
-                activeTimers.append(timer)
-            } else {
-                otherTimers.append(timer)
-            }
-        }
+        timers = filterTimers(timerModels: timers, text: text)
         
-        otherTimers = filterTimers(timerModels: otherTimers, text: text)
-        
-        return (activeTimers, otherTimers)
+        return timers
     }
-        
+    
     private func mapCategoryEntitiesToCategoryModels(categoryEntities: [CategoryEntity]) -> [CategoryModel] {
         var categories: [CategoryModel] = []
         
@@ -217,12 +220,13 @@ class TimerManager: ObservableObject {
     }
     
     private func filterTimers(timerModels: [TimerModel], text: String) -> [TimerModel] {
+        print("filterTimers called")
         guard !text.isEmpty else {
             return timerModels
         }
         
         let lowercasedText = text.lowercased()
-         
+        
         return timerModels.filter { (timer) -> Bool in
             if let category = timer.category {
                 return (timer.title.lowercased().contains(lowercasedText) ||
@@ -239,8 +243,7 @@ class TimerManager: ObservableObject {
     private func startClock() {
         clock?.cancel()
         
-        clock = Timer
-            .publish(every: 0.01, on: .main, in: .common)
+        clock = Timer.TimerPublisher(interval: 0.01, runLoop: .main, mode: .common)
             .autoconnect()
             .sink { [weak self] _ in
                 guard let self = self else { return }
@@ -250,15 +253,7 @@ class TimerManager: ObservableObject {
     }
     
     private func stopClock() {
-        let shouldStopClock: Bool = true
-        
-        for timer in allTimers {
-            if timer.isRunning && !timer.isPaused {
-                return
-            }
-        }
-        
-        if shouldStopClock {
+        if activeTimers.isEmpty {
             clock?.cancel()
         }
     }

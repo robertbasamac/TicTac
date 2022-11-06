@@ -13,7 +13,8 @@ class CoreDataManager {
     
     let container: NSPersistentContainer
     
-    @Published var timers: [TimerEntity] = []
+    @Published var activeTimers: [TimerEntity] = []
+    @Published var otherTimers: [TimerEntity] = []
     @Published var categories: [CategoryEntity] = []
     
     init() {
@@ -32,10 +33,18 @@ class CoreDataManager {
     
     // MARK: - Public
     func updateTimer(timer: TimerModel) {
-        if let entity = timers.first(where: { $0.id == timer.id }) {
-            updateTimer(entity: entity, timer: timer)
-        } else {
-            addTimer(timer: timer)
+        let request = NSFetchRequest<TimerEntity>(entityName: "TimerEntity")
+        
+        request.predicate = NSPredicate(format: "id == %@", timer.id)
+        
+        do {
+            if let entity = try container.viewContext.fetch(request).first {
+                updateTimer(entity: entity, timer: timer)
+            } else {
+                addTimer(timer: timer)
+            }
+        } catch let error {
+            print("Error fetching Timers, \(error.localizedDescription)")
         }
         
         applyChanges()
@@ -53,7 +62,9 @@ class CoreDataManager {
     }
     
     func deleteTimer(timer: TimerModel) {
-        if let entity = timers.first(where: { $0.id == timer.id }) {
+        if let entity = activeTimers.first(where: { $0.id == timer.id }) {
+            container.viewContext.delete(entity)
+        } else if let entity = otherTimers.first(where: { $0.id == timer.id }) {
             container.viewContext.delete(entity)
         }
         
@@ -70,7 +81,9 @@ class CoreDataManager {
     
     func updateAllTimers(timers: [TimerModel]) {
         for timer in timers {
-            if let entity = self.timers.first(where: { $0.id == timer.id }) {
+            if let entity = activeTimers.first(where: { $0.id == timer.id }) {
+                updateTimer(entity: entity, timer: timer)
+            } else if let entity = otherTimers.first(where: { $0.id == timer.id }) {
                 updateTimer(entity: entity, timer: timer)
             }
         }
@@ -81,10 +94,29 @@ class CoreDataManager {
     // MARK: - Private
 
     private func getTimers() {
+        getActiveTimers()
+        getOtherTimers()
+    }
+    
+    private func getActiveTimers() {
         let request = NSFetchRequest<TimerEntity>(entityName: "TimerEntity")
-                
+        
+        request.predicate = NSPredicate(format: "isRunning == YES")
+        
         do {
-            timers = try container.viewContext.fetch(request)
+            activeTimers = try container.viewContext.fetch(request)
+        } catch let error {
+            print("Error fetching Timers, \(error.localizedDescription)")
+        }
+    }
+    
+    private func getOtherTimers() {
+        let request = NSFetchRequest<TimerEntity>(entityName: "TimerEntity")
+        
+        request.predicate = NSPredicate(format: "isRunning == NO")
+        
+        do {
+            otherTimers = try container.viewContext.fetch(request)
         } catch let error {
             print("Error fetching Timers, \(error.localizedDescription)")
         }
