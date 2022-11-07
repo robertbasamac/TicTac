@@ -24,7 +24,6 @@ struct MainView: View {
                     otherTimersSection
                 }
             }
-            .animation(.none, value: tm.activeTimers.isEmpty || tm.otherTimers.isEmpty)
             .listStyle(.plain)
             .navigationTitle("Timers")
             .toolbar {
@@ -72,8 +71,11 @@ extension MainView {
                 tm.deleteTimer(indexSet: indexSet, active: true)
             }
         } header: {
-            Text("Active timers")
-                .font(.headline)
+            HStack {
+                Image(systemName: "play.circle.fill")
+                Text("Active")
+            }
+                .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .foregroundStyle(.primary)
         }
     }
@@ -93,8 +95,8 @@ extension MainView {
             }
         } header: {
             if !tm.activeTimers.isEmpty {
-                Text("Other timers")
-                    .font(.headline)
+                Text("Other")
+                    .font(.system(size: 20, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primary)
             }
         }

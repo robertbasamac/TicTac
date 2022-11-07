@@ -38,6 +38,12 @@ class TimerManager: ObservableObject {
         coreDataManager.updateTimer(timer: timer)
     }
     
+    func handleTimer(_ timer: TimerModel) {
+        timer.isRunning ?
+            timer.isPaused ? resumeTimer(timer) : pauseTimer(timer)
+            : startTimer(timer)
+    }
+    
     func startTimer(_ timer: TimerModel) {
         print("\nSTART")
         

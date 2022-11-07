@@ -50,7 +50,6 @@ class CoreDataManager {
         applyChanges()
     }
     
-    
     func updateCategory(category: CategoryModel) {
         if let entity = categories.first(where: { $0.id == category.id }) {
             updateCategory(entity: entity, category: category)

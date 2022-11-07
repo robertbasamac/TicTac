@@ -73,21 +73,13 @@ extension TimerRowView {
             if timer.isRunning {
                 CircleButtonView(style: .reset)
                     .onTapGesture {
-                        withAnimation {
-                            tm.stopTimer(timer)
-                        }
+                        tm.stopTimer(timer)
                     }
             }
             
             CircleButtonView(style: timer.isRunning != timer.isPaused ? .pause : .start)
                 .onTapGesture {
-                    withAnimation {
-                        timer.isRunning ?
-                        (timer.isPaused ?
-                         tm.resumeTimer(timer) :
-                            tm.pauseTimer(timer))
-                        : tm.startTimer(timer)
-                    }
+                    tm.handleTimer(timer)
                 }
         }
     }
