@@ -62,7 +62,9 @@ class TimerManager: ObservableObject {
         
         let timers = activeTimers + otherTimers
         
-        coreDataManager.updateAllTimers(timers: timers)
+        withAnimation {
+            coreDataManager.updateAllTimers(timers: timers)
+        }
     }
     
     func pauseTimer(_ timer: TimerModel) {
@@ -73,7 +75,9 @@ class TimerManager: ObservableObject {
             activeTimers[index].pauseTime = Date()
         }
         
-        coreDataManager.updateAllTimers(timers: activeTimers)
+        withAnimation {
+            coreDataManager.updateAllTimers(timers: activeTimers)
+        }
         
         stopClock()
     }
@@ -89,7 +93,9 @@ class TimerManager: ObservableObject {
             activeTimers[index].isPaused = false
         }
         
-        coreDataManager.updateAllTimers(timers: activeTimers)
+        withAnimation {
+            coreDataManager.updateAllTimers(timers: activeTimers)
+        }
     }
     
     func stopTimer(_ timer: TimerModel) {
@@ -104,7 +110,9 @@ class TimerManager: ObservableObject {
             activeTimers[index].elapsedTime = 0
         }
         
-        coreDataManager.updateAllTimers(timers: activeTimers)
+        withAnimation {
+            coreDataManager.updateAllTimers(timers: activeTimers)
+        }
         
         stopClock()
     }

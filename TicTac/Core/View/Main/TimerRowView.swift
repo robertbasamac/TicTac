@@ -34,6 +34,7 @@ struct TimerRowView_Previews: PreviewProvider {
 
 extension TimerRowView {
     
+    @ViewBuilder
     private var titleSection: some View {
         VStack(spacing: 0) {
             if let category = timer.category {
@@ -60,15 +61,20 @@ extension TimerRowView {
         }
     }
     
-    @ViewBuilder private var timerSection: some View {
-        if timer.isRunning {
-            progressCircleView
-        } else {
-            timerDurationView
+    @ViewBuilder
+    private var timerSection: some View {
+        ZStack {
+            if timer.isRunning {
+                progressCircleView
+            } else {
+                timerDurationView
+            }
         }
+        .animation(.none, value: UUID())
     }
     
-    @ViewBuilder private var buttonsSection: some View {
+    @ViewBuilder
+    private var buttonsSection: some View {
         VStack(spacing: 4) {
             if timer.isRunning {
                 CircleButtonView(style: .reset)
@@ -82,8 +88,10 @@ extension TimerRowView {
                     tm.handleTimer(timer)
                 }
         }
+        .animation(.none, value: UUID())
     }
-        
+    
+    @ViewBuilder
     private var progressCircleView: some View {
         ZStack {
             Circle()
@@ -95,7 +103,7 @@ extension TimerRowView {
                                 style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
                         .rotationEffect(Angle(degrees: -90))
                 )
-                         
+            
             VStack {
                 Text("\(timer.duration.asHoursMinutesSecondsShorted)")
                     .font(.system(size: 12, weight: .semibold, design: .default))
@@ -114,9 +122,11 @@ extension TimerRowView {
             }
         }
         .padding(4)
+        .font(.title3)
         .frame(width: 110, height: 110)
     }
     
+    @ViewBuilder
     private var timerDurationView: some View {
         Text("\(timer.duration.asHoursMinutesSecondsShorted)")
             .font(.system(size: 22, weight: .none, design: .default))

@@ -24,6 +24,7 @@ struct MainView: View {
                     otherTimersSection
                 }
             }
+            .animation(.none, value: tm.activeTimers.isEmpty || tm.otherTimers.isEmpty)
             .listStyle(.plain)
             .navigationTitle("Timers")
             .toolbar {
@@ -35,7 +36,7 @@ struct MainView: View {
                     addButton
                 }
             }
-            .searchable(text: $tm.searchText, placement: .automatic, prompt: "Search")
+            .searchable(text: $tm.searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
         }
         .onAppear {
             NotificationManager.instance.requestAuthorization()
@@ -74,6 +75,14 @@ extension MainView {
             HStack {
                 Image(systemName: "play.circle.fill")
                 Text("Active")
+                
+                Spacer()
+                
+                Button {
+                    
+                } label: {
+                    sortButton
+                }
             }
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .foregroundStyle(.primary)
