@@ -24,7 +24,7 @@ struct MainView: View {
                     otherTimersSection
                 }
             }
-            .animation(.none, value: tm.activeTimers.isEmpty || tm.otherTimers.isEmpty)
+            .animation(.none, value: (!tm.activeTimers.isEmpty || tm.otherTimers.isEmpty) && (tm.activeTimers.isEmpty || !tm.otherTimers.isEmpty))
             .listStyle(.plain)
             .navigationTitle("Timers")
             .toolbar {
